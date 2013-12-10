@@ -1,0 +1,178 @@
+#SPC routines
+
+C4:0000 -- тут походу загружается микропрограмма в SPC.
+
+{{{
+00C4:0000ю4C 2C 00     jmp  002C
+
+00C4:002Cю8B           push db
+00C4:002D 0B           push d
+00C4:002E 08           push p
+00C4:002F C2 20        clr  p,20                // 16-bit A
+00C4:0031 C2 10        clr  p,10                // 16-bit X/Y
+00C4:0033ю48           push a
+00C4:0034 DA           push x
+00C4:0035 5A           push y
+
+00C4:0036 E2 20        set  p,20                // 8-bit A
+00C4:0038юA9 00        mov  a,00
+00C4:003A 48           push a
+00C4:003B AB           pop  db
+00C4:003C A2 00 1D     mov  x,1D00
+00C4:003F DA           push x
+00C4:0040 2B           pop  d
+00C4:0041 A2 AA BB     mov  x,BBAA
+00C4:0044 A0 00 08     mov  y,0800
+00C4:0047 EC 40 21     cmp  x,[2140]            // APU0
+00C4:004A F0 32        jz   007E
+00C4:004C 88           dec  y
+00C4:004D D0 F8        jnz  0047
+00C4:004F A4 F8        mov  y,[F8]
+00C4:0051 F0 2B        jz   007E
+00C4:0053 C4 48        cmp  y,[48]
+00C4:0055 D0 27        jnz  007E
+00C4:0057 A9 F0        mov  a,F0
+00C4:0059 C5 00        cmp  a,[00]
+00C4:005B D0 21        jnz  007E
+00C4:005D A9 08        mov  a,08
+00C4:005F 8D 41 21     mov  [2141],a            // APU1
+00C4:0062 A9 00        mov  a,00
+00C4:0064 8D 40 21     mov  [2140],a            // APU0
+00C4:0067 A2 F8 00     mov  x,00F8
+00C4:006A 9D FF 1C     mov  [1CFF+x],a
+00C4:006D CA           dec  x
+00C4:006E D0 FA        jnz  006A
+00C4:0070 A4 F8        mov  y,[F8]
+00C4:0072 84 48        mov  [48],y
+00C4:0074 3A           dec  a
+00C4:0075 85 05        mov  [05],a
+00C4:0077 A9 F0        mov  a,F0
+00C4:0079 85 00        mov  [00],a
+00C4:007B 4C 61 01     jmp  0161
+
+00C4:007E EC 40 21     cmp  x,[2140]            // APU0
+00C4:0081 D0 FB        jnz  007E
+00C4:0083 A2 00 00     mov  x,0000
+00C4:0086 AF 14 00 C4  mov  a,[far C40014]
+00C4:008A 8D 42 21     mov  [2142],a            // APU2
+00C4:008D AF 15 00 C4  mov  a,[far C40015]
+00C4:0091 8D 43 21     mov  [2143],a            // APU3
+00C4:0094 A9 CC        mov  a,CC
+00C4:0096 8D 41 21     mov  [2141],a            // APU1
+00C4:0099 8D 40 21     mov  [2140],a            // APU0
+00C4:009C CD 40 21     cmp  a,[2140]            // APU0
+00C4:009F D0 FB        jnz  009C
+
+00C4:00A1 A9 00        mov  a,00
+00C4:00A3 EB           swap a
+00C4:00A4 BF 08 00 C4  mov  a,[far C40008+x]
+00C4:00A8 85 14        mov  [14],a
+00C4:00AA BF 09 00 C4  mov  a,[far C40009+x]
+00C4:00AE 85 15        mov  [15],a
+00C4:00B0 A9 C4        mov  a,C4
+00C4:00B2 85 16        mov  [16],a              // [14][15][16] - set pointer 
+00C4:00B4 A0 00 00     mov  y,0000
+00C4:00B7 B7 14        mov  a,[far[14]+y]
+00C4:00B9 18           clc
+00C4:00BA 69 02        adc  a,02
+00C4:00BC 85 10        mov  [10],a
+00C4:00BE C8           inc  y
+00C4:00BF B7 14        mov  a,[far[14]+y]
+00C4:00C1 69 00        adc  a,00
+00C4:00C3 85 11        mov  [11],a
+00C4:00C5 C8           inc  y
+00C4:00C6 B7 14        mov  a,[far[14]+y]
+00C4:00C8 8D 41 21     mov  [2141],a            // APU1
+00C4:00CB EB           swap a
+00C4:00CC 8D 40 21     mov  [2140],a            // APU0
+00C4:00CF CD 40 21     cmp  a,[2140]            // APU0
+00C4:00D2 D0 FB        jnz  00CF
+00C4:00D4 1A           inc  a
+00C4:00D5 EB           swap a
+00C4:00D6 C8           inc  y
+00C4:00D7 C4 10        cmp  y,[10]
+00C4:00D9 D0 EB        jnz  00C6
+00C4:00DB EB           swap a
+00C4:00DC 1A           inc  a
+00C4:00DD 1A           inc  a
+00C4:00DE 1A           inc  a
+00C4:00DF D0 01        jnz  00E2
+00C4:00E1 1A           inc  a
+00C4:00E2 E8           inc  x
+00C4:00E3 E8           inc  x
+00C4:00E4 E0 0C 00     cmp  x,000C
+00C4:00E7 F0 1D        jz   0106
+00C4:00E9 EB           swap a
+00C4:00EA BF 14 00 C4  mov  a,[far C40014+x]
+00C4:00EE 8D 42 21     mov  [2142],a            // APU2
+00C4:00F1 BF 15 00 C4  mov  a,[far C40015+x]
+00C4:00F5 8D 43 21     mov  [2143],a            // APU3
+00C4:00F8 EB           swap a
+00C4:00F9 8D 41 21     mov  [2141],a            // APU1
+00C4:00FC 8D 40 21     mov  [2140],a            // APU0
+00C4:00FF CD 40 21     cmp  a,[2140]            // APU0
+00C4:0102 D0 FB        jnz  00FF
+00C4:0104 80 9B        jr8  00A1
+
+00C4:0106 A0 00 02     mov  y,0200
+00C4:0109 8C 42 21     mov  [2142],y            // APU2
+00C4:010C EB           swap a
+00C4:010D A9 00        mov  a,00
+00C4:010F 8D 41 21     mov  [2141],a            // APU1
+00C4:0112 EB           swap a
+00C4:0113 8D 40 21     mov  [2140],a            // APU0
+00C4:0116 CD 40 21     cmp  a,[2140]            // APU0
+00C4:0119 D0 FB        jnz  0116
+00C4:011B EB           swap a
+00C4:011C 8D 40 21     mov  [2140],a            // APU0
+00C4:011F A2 00 01     mov  x,0100
+00C4:0122 9D FF 1C     mov  [1CFF+x],a
+00C4:0125 CA           dec  x
+00C4:0126 D0 FA        jnz  0122
+00C4:0128 A9 FF        mov  a,FF
+00C4:012A 85 05        mov  [05],a
+
+00C4:012C C2 20        clr  p,20
+00C4:012EюAF 3F 1E C4  mov  a,[far C41E3F]
+00C4:0132 18           clc
+00C4:0133 69 00 48     adc  a,4800
+00C4:0136 85 F8        mov  [F8],a
+00C4:0138 85 48        mov  [48],a
+00C4:013A A2 00 08     mov  x,0800          // wait
+00C4:013D CA           dec  x
+00C4:013E D0 FD        jnz  013D
+00C4:0140 E2 20        set  p,20
+00C4:0142юA9 00        mov  a,00
+00C4:0144 85 FA        mov  [FA],a
+00C4:0146 A9 C4        mov  a,C4
+00C4:0148 85 FB        mov  [FB],a
+00C4:014A 80 31        jr8  017D
+
+...
+
+00C4:0161 E2 20        set  p,20
+00C4:0163 A5 00        mov  a,[00]
+00C4:0165 64 00        mov  [00],0
+00C4:0167 F0 14        jz   017D
+00C4:0169 30 0C        js   0177
+00C4:016B C9 01        cmp  a,01
+00C4:016D F0 19        jz   0188
+00C4:016F C9 03        cmp  a,03
+00C4:0171 F0 15        jz   0188
+00C4:0173 C9 70        cmp  a,70
+00C4:0175 B0 03        jc   017A
+00C4:0177 4C 89 05     jmp  0589
+00C4:017A 4C C9 05     jmp  05C9
+
+00C4:017D C2 20        clr  p,20            // 16-bit A
+00C4:017F C2 10        clr  p,10            // 16-bit X/Y
+00C4:0181ю7A           pop  y
+00C4:0182 FA           pop  x
+00C4:0183 68           pop  a
+00C4:0184 28           pop  p
+00C4:0185 2B           pop  d
+00C4:0186 AB           pop  db
+00C4:0187 6B           retf
+
+------------------------------------------------
+}}}
