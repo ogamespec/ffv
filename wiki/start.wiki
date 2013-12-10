@@ -18,7 +18,7 @@ C2:A000 - [GameMenu]
 00C0:0002 FB           xce
 00C0:0003 C2 10        clr  p,10                // 16-bit X/Y
 00C0:0005 E2 20        set  p,20                // 8-bit A
-00C0:0007ю9C 0D 42     mov  [420D],0            // cycle speed 2.68 Mhz
+00C0:0007 9C 0D 42     mov  [420D],0            // cycle speed 2.68 Mhz
 00C0:000A 9C 0B 42     mov  [420B],0            // DMA disable all
 00C0:000D 9C 0C 42     mov  [420C],0            // H-DMA disable all
 00C0:0010 A9 8F        mov  a,8F
