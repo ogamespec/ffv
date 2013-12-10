@@ -39,7 +39,7 @@ C2:A000 - [GameMenu]
 00C0:002D 86 06        mov  [06],x          // заполнитель WRAM = 0x0000
 00C0:002F 22 00 00 C4  call far C40000      // SPC init
 00C0:0033 A9 F1        mov  a,F1
-00C0:0035 20 C8 44     call 44C8            // intro
+00C0:0035 20 C8 44     call 44C8            // intro (Background FX = F1)
 00C0:0038 20 69 4E     call 4E69            // сбросить PPU в исходное состояние, которое нам нужно
 00C0:003B 20 0A 49     call 490A            // заполнить WRAM заполнителем
 00C0:003E A9 03        mov  a,03
