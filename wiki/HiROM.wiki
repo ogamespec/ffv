@@ -1,27 +1,27 @@
 The HiRom memory map is as follows:
-Bank	Offset	Definition	Shadowing
-$00-$2F	$0000-$1FFF	LowRAM, shadowed From $7E	$7E
-$2000-$2FFF	PPU1, APU	$00-$3F
-$3000-$3FFF	SFX, DSP, etc.	$00-$3F
-$4000-$41FF	Controller	$00-$3F
-$4200-$5FFF	PPU2, DMA, etc.	$00-$3F
-$6000-$7FFF	RESERVED	$00-$3F
-$8000-$FFFF	(Mode 21 ROM) From $C0-$EF	$C0-$EF
-$30-$3F	$0000-$1FFF	LowRAM, shadowed From $7E	$7E
-$2000-$2FFF	PPU1, APU	$00-$3F
-$3000-$3FFF	SFX, DSP, etc.	$00-$3F
-$4000-$41FF	Controller	$00-$3F
-$4200-$5FFF	PPU2, DMA, etc.	$00-$3F
-$6000-$7FFF	(Mode 21 SRAM) 256KBytes	-------
-$8000-$FFFF	(Mode 21 ROM) From $C0-$EF	$C0-$EF
-$40-$6F	$0000-$7FFF	(Mode 21 ROM) From $C0-$EF	$C0-$EF
-$70-$77	$0000-$FFFF	(Mode 20 SRAM) 256KBytes	-------
-$78-$7D	$0000-$FFFF	RESERVED	-------
-$7E	$0000-$1FFF	LowRAM	$00-$3F
-$2000-$7FFF	HighRAM	-------
-$8000-$FFFF	Expanded RAM	-------
-$7F	$0000-$FFFF	Expanded RAM	-------
-$80-$BF	$0000-$FFFF	Mirror oF $00-$3F	$00-$3F
-$c0-$FF	$0000-$FFFF	(Mode 21 ROM)	-------
+||Bank	||Offset	||Definition	||Shadowing||
+||$00-$2F	||$0000-$1FFF	||LowRAM, shadowed From $7E	||$7E||
+||||$2000-$2FFF	||PPU1, APU	||$00-$3F||
+||||$3000-$3FFF	||SFX, DSP, etc.	||$00-$3F||
+||||$4000-$41FF	||Controller	||$00-$3F||
+||||$4200-$5FFF	||PPU2, DMA, etc.	||$00-$3F||
+||||$6000-$7FFF	||RESERVED	||$00-$3F||
+||||$8000-$FFFF	||(Mode 21 ROM) From $C0-$EF	$||C0-$EF||
+||$30-$3F	||$0000-$1FFF	||LowRAM, shadowed From $7E	||$7E||
+||||$2000-$2FFF	||PPU1, APU	||$00-$3F||
+||||$3000-$3FFF	||SFX, DSP, etc.	||$00-$3F||
+||||$4000-$41FF	||Controller	||$00-$3F||
+||||$4200-$5FFF	||PPU2, DMA, etc.	||$00-$3F||
+||||$6000-$7FFF	||(Mode 21 SRAM) 256KBytes	||-------||
+||||$8000-$FFFF	||(Mode 21 ROM) From $C0-$EF	||$C0-$EF||
+||$40-$6F	||$0000-$7FFF	||(Mode 21 ROM) From $C0-$EF	||$C0-$EF||
+||$70-$77	||$0000-$FFFF	||(Mode 20 SRAM) 256KBytes	||-------||
+||$78-$7D	||$0000-$FFFF	||RESERVED	||-------||
+||$7E	||$0000-$1FFF	||LowRAM	||$00-$3F||
+||||$2000-$7FFF	||HighRAM	||-------||
+||||$8000-$FFFF	||Expanded RAM	||-------||
+||$7F	||$0000-$FFFF	||Expanded RAM	||-------||
+||$80-$BF	||$0000-$FFFF	||Mirror oF $00-$3F	||$00-$3F||
+||$c0-$FF	||$0000-$FFFF	||(Mode 21 ROM)	||-------||
 
 http://en.wikibooks.org/wiki/Super_NES_Programming/SNES_memory_map
