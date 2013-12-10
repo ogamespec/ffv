@@ -27,7 +27,7 @@
 00C0:0029 2B           pop  d                   // D = 0x0B00
 00C0:002A A2 00 00     mov  x,0000
 00C0:002D 86 06        mov  [06],x
-00C0:002F 22 00 00 C4  call far C40000      // SPC init?
+00C0:002F 22 00 00 C4  call far C40000      // SPC init
 00C0:0033 A9 F1        mov  a,F1
 00C0:0035 20 C8 44     call 44C8            // intro
 00C0:0038 20 69 4E     call 4E69
