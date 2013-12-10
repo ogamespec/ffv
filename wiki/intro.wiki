@@ -5,7 +5,7 @@ C3:0000 -- тут непосредственно воспроизводится 
 
 {{{
 
-00C0:44C8ю48           push a
+00C0:44C8 48           push a
 00C0:44C9 9C 0B 42     mov  [420B],0        // Regular DMA Channel Enable = 0
 00C0:44CC 9C 0C 42     mov  [420C],0        // H-DMA Channel Enable = 0
 00C0:44CF A9 00        mov  a,00
@@ -22,7 +22,7 @@ C3:0000 -- тут непосредственно воспроизводится 
 
 00C0:44E3 C2 10        clr  p,10            // 16-bit XY
 00C0:44E5 E2 20        set  p,20            // 8-bit A
-00C0:44E7юA9 00        mov  a,00
+00C0:44E7 A9 00        mov  a,00
 00C0:44E9 48           push a
 00C0:44EA AB           pop  db
 00C0:44EB A2 00 0B     mov  x,0B00
@@ -44,7 +44,7 @@ C3:0000 -- тут непосредственно воспроизводится 
 // Какая-то работа с памятью [1F00]
 
 
-00C0:4E4AюA9 5C        mov  a,5C
+00C0:4E4A A9 5C        mov  a,5C
 00C0:4E4C 8D 00 1F     mov  [1F00],a
 00C0:4E4F 8D 04 1F     mov  [1F04],a
 00C0:4E52 A2 D1 02     mov  x,02D1
