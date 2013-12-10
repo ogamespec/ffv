@@ -1,0 +1,262 @@
+Похоже на game main loop.
+
+{{{
+00C0:0000 78           di
+00C0:0001 18           clc
+00C0:0002 FB           xce
+00C0:0003 C2 10        clr  p,10
+00C0:0005 E2 20        set  p,20
+00C0:0007ю9C 0D 42     mov  [420D],0
+00C0:000A 9C 0B 42     mov  [420B],0
+00C0:000D 9C 0C 42     mov  [420C],0
+00C0:0010 A9 8F        mov  a,8F
+00C0:0012 8D 00 21     mov  [2100],a
+00C0:0015 A9 00        mov  a,00
+00C0:0017 8D 00 42     mov  [4200],a
+00C0:001A A9 00        mov  a,00
+00C0:001C EB           swap a
+00C0:001D A2 FF 1F     mov  x,1FFF
+00C0:0020 9A           mov  s,x
+00C0:0021 A9 00        mov  a,00
+00C0:0023 48           push a
+00C0:0024 AB           pop  db
+00C0:0025 A2 00 0B     mov  x,0B00
+00C0:0028 DA           push x
+00C0:0029 2B           pop  d
+00C0:002A A2 00 00     mov  x,0000
+00C0:002D 86 06        mov  [06],x
+00C0:002F 22 00 00 C4  call far C40000
+00C0:0033 A9 F1        mov  a,F1
+00C0:0035 20 C8 44     call 44C8            // intro
+00C0:0038 20 69 4E     call 4E69
+00C0:003B 20 0A 49     call 490A
+00C0:003E A9 03        mov  a,03
+00C0:0040 8D 34 01     mov  [0134],a
+00C0:0043 22 00 A0 C2  call far C2A000
+00C0:0047 20 E3 44     call 44E3
+00C0:004A 20 69 4E     call 4E69
+00C0:004D 20 4A 4E     call 4E4A
+00C0:0050 AD 39 01     mov  a,[0139]
+00C0:0053 F0 28        jz   007D
+
+00C0:0055 20 1D 49     call 491D
+00C0:0058 AD F9 0A     mov  a,[0AF9]
+00C0:005B 8D 60 0B     mov  [0B60],a
+00C0:005E 4A           shr  a
+00C0:005F 8D 5F 0B     mov  [0B5F],a
+00C0:0062 A9 01        mov  a,01
+00C0:0064 85 BD        mov  [BD],a
+00C0:0066 85 BC        mov  [BC],a
+00C0:0068 1A           inc  a
+00C0:0069 85 B9        mov  [B9],a
+00C0:006B AD D8 0A     mov  a,[0AD8]
+00C0:006E 8D 88 10     mov  [1088],a
+00C0:0071 AD D9 0A     mov  a,[0AD9]
+00C0:0074 8D 89 10     mov  [1089],a
+00C0:0077 20 5D 54     call 545D
+00C0:007A 4C AD 00     jmp  00AD
+
+00C0:007D 20 FA 48     call 48FA
+00C0:0080 20 ED 48     call 48ED
+00C0:0083 20 DD 48     call 48DD
+00C0:0086 20 28 45     call 4528
+00C0:0089 20 0A 45     call 450A
+00C0:008C A9 01        mov  a,01
+00C0:008E 85 BD        mov  [BD],a
+00C0:0090 85 BC        mov  [BC],a
+00C0:0092 A2 10 00     mov  x,0010
+00C0:0095 86 CE        mov  [CE],x
+00C0:0097 A9 01        mov  a,01
+00C0:0099 85 57        mov  [57],a
+00C0:009B A9 81        mov  a,81
+00C0:009D 8D 00 42     mov  [4200],a
+00C0:00A0 58           ei
+00C0:00A1 20 17 A2     call A217            // shortcut scene
+00C0:00A4 64 57        mov  [57],0
+00C0:00A6 64 58        mov  [58],0
+00C0:00A8 64 55        mov  [55],0
+00C0:00AA 4C AD 00     jmp  00AD
+
+00C0:00AD 20 41 4E     call 4E41
+00C0:00B0 A5 02        mov  a,[02]
+00C0:00B2 29 40        and  a,40
+00C0:00B4 F0 08        jz   00BE
+00C0:00B6 A5 53        mov  a,[53]
+00C0:00B8 F0 07        jz   00C1
+00C0:00BA A5 5D        mov  a,[5D]
+00C0:00BC F0 03        jz   00C1
+00C0:00BE 4C 47 01     jmp  0147
+00C0:00C1 AD 61 0B     mov  a,[0B61]
+00C0:00C4 29 1F        and  a,1F
+00C0:00C6 D0 7F        jnz  0147
+00C0:00C8 AD 63 0B     mov  a,[0B63]
+00C0:00CB 29 1F        and  a,1F
+00C0:00CD D0 78        jnz  0147
+00C0:00CF A9 00        mov  a,00
+00C0:00D1 8D 35 01     mov  [0135],a
+00C0:00D4 AD DC 0A     mov  a,[0ADC]
+00C0:00D7 D0 16        jnz  00EF
+00C0:00D9 AE D6 0A     mov  x,[0AD6]
+00C0:00DC E0 05 00     cmp  x,0005
+00C0:00DF 90 09        jnc  00EA
+00C0:00E1 A9 FD        mov  a,FD
+00C0:00E3 20 3C CA     call CA3C
+00C0:00E6 C9 00        cmp  a,00
+00C0:00E8 F0 05        jz   00EF
+00C0:00EA A9 80        mov  a,80
+00C0:00EC 8D 35 01     mov  [0135],a
+00C0:00EF 64 08        mov  [08],0
+00C0:00F1 A5 53        mov  a,[53]
+00C0:00F3 F0 07        jz   00FC
+00C0:00F5 AD 0F 11     mov  a,[110F]
+00C0:00F8 29 03        and  a,03
+00C0:00FA 85 08        mov  [08],a
+00C0:00FC AD 35 01     mov  a,[0135]
+00C0:00FF 05 08        or   a,[08]
+00C0:0101 8D 35 01     mov  [0135],a
+00C0:0104 A9 00        mov  a,00
+00C0:0106 8D 34 01     mov  [0134],a
+00C0:0109 20 4C 45     call 454C
+00C0:010C A9 02        mov  a,02
+00C0:010E 85 55        mov  [55],a
+00C0:0110 AD D8 0A     mov  a,[0AD8]
+00C0:0113 8D 88 10     mov  [1088],a
+00C0:0116 AD D9 0A     mov  a,[0AD9]
+00C0:0119 8D 89 10     mov  [1089],a
+00C0:011C 20 76 54     call 5476
+00C0:011F AD 39 01     mov  a,[0139]
+00C0:0122 C9 F0        cmp  a,F0
+00C0:0124 D0 05        jnz  012B
+00C0:0126 A2 22 00     mov  x,0022
+00C0:0129 80 10        jr8  013B
+00C0:012B C9 F1        cmp  a,F1
+00C0:012D D0 05        jnz  0134
+00C0:012F A2 24 00     mov  x,0024
+00C0:0132 80 07        jr8  013B
+00C0:0134 C9 3E        cmp  a,3E
+00C0:0136 D0 06        jnz  013E
+00C0:0138 A2 32 00     mov  x,0032
+00C0:013B 20 6A 04     call 046A
+00C0:013E 9C AA 16     mov  [16AA],0
+00C0:0141 20 E9 14     call 14E9
+00C0:0144 4C AD 00     jmp  00AD
+
+00C0:0147 20 1A 06     call 061A
+00C0:014A 20 8B A1     call A18B
+00C0:014D A5 58        mov  a,[58]
+00C0:014F F0 05        jz   0156
+00C0:0151 64 58        mov  [58],0
+00C0:0153 4C AD 00     jmp  00AD
+00C0:0156 A5 6E        mov  a,[6E]
+00C0:0158 F0 06        jz   0160
+00C0:015A 20 5A 54     call 545A
+00C0:015D 4C AD 00     jmp  00AD
+
+00C0:0160 AE D6 0A     mov  x,[0AD6]
+00C0:0163 E0 05 00     cmp  x,0005
+00C0:0166 90 03        jnc  016B
+00C0:0168 4C 62 02     jmp  0262
+00C0:016B 20 3E 07     call 073E
+00C0:016E A5 58        mov  a,[58]
+00C0:0170 F0 05        jz   0177
+00C0:0172 64 58        mov  [58],0
+00C0:0174 4C AD 00     jmp  00AD
+
+00C0:0177 A5 61        mov  a,[61]
+00C0:0179 29 1F        and  a,1F
+00C0:017B D0 7E        jnz  01FB
+00C0:017D A5 63        mov  a,[63]
+00C0:017F 29 1F        and  a,1F
+00C0:0181 D0 78        jnz  01FB
+00C0:0183 AD D6 0A     mov  a,[0AD6]
+00C0:0186 C9 01        cmp  a,01
+00C0:0188 D0 17        jnz  01A1
+00C0:018A AD D9 0A     mov  a,[0AD9]
+00C0:018D C9 A1        cmp  a,A1
+00C0:018F D0 10        jnz  01A1
+00C0:0191 AD D8 0A     mov  a,[0AD8]
+00C0:0194 C9 9F        cmp  a,9F
+00C0:0196 90 09        jnc  01A1
+00C0:0198 C9 A2        cmp  a,A2
+00C0:019A B0 05        jc   01A1
+00C0:019C A2 12 00     mov  x,0012
+00C0:019F 80 4E        jr8  01EF
+00C0:01A1 AD D6 0A     mov  a,[0AD6]
+00C0:01A4 D0 22        jnz  01C8
+00C0:01A6 AD DC 0A     mov  a,[0ADC]
+00C0:01A9 C9 06        cmp  a,06
+00C0:01AB D0 1B        jnz  01C8
+00C0:01AD AD D8 0A     mov  a,[0AD8]
+00C0:01B0 C9 3D        cmp  a,3D
+00C0:01B2 90 14        jnc  01C8
+00C0:01B4 C9 43        cmp  a,43
+00C0:01B6 B0 10        jc   01C8
+00C0:01B8 AD D9 0A     mov  a,[0AD9]
+00C0:01BB C9 9E        cmp  a,9E
+00C0:01BD 90 09        jnc  01C8
+00C0:01BF C9 A5        cmp  a,A5
+00C0:01C1 B0 05        jc   01C8
+00C0:01C3 A2 20 00     mov  x,0020
+00C0:01C6 80 27        jr8  01EF
+00C0:01C8 AD D6 0A     mov  a,[0AD6]
+00C0:01CB C9 02        cmp  a,02
+00C0:01CD D0 2C        jnz  01FB
+00C0:01CF AD DC 0A     mov  a,[0ADC]
+00C0:01D2 C9 05        cmp  a,05
+00C0:01D4 90 25        jnc  01FB
+00C0:01D6 AD D8 0A     mov  a,[0AD8]
+00C0:01D9 C9 B6        cmp  a,B6
+00C0:01DB 90 1E        jnc  01FB
+00C0:01DD C9 BA        cmp  a,BA
+00C0:01DF B0 1A        jc   01FB
+00C0:01E1 AD D9 0A     mov  a,[0AD9]
+00C0:01E4 C9 87        cmp  a,87
+00C0:01E6 90 13        jnc  01FB
+00C0:01E8 C9 8B        cmp  a,8B
+00C0:01EA B0 0F        jc   01FB
+00C0:01EC A2 18 00     mov  x,0018
+00C0:01EF 20 6A 04     call 046A
+00C0:01F2 A5 58        mov  a,[58]
+00C0:01F4 F0 05        jz   01FB
+00C0:01F6 64 58        mov  [58],0
+00C0:01F8 4C AD 00     jmp  00AD
+00C0:01FB 20 11 CB     call CB11
+00C0:01FE A5 55        mov  a,[55]
+00C0:0200 F0 1E        jz   0220
+00C0:0202 A9 FF        mov  a,FF
+00C0:0204 20 3C CA     call CA3C
+00C0:0207 C9 00        cmp  a,00
+00C0:0209 D0 15        jnz  0220
+00C0:020B 20 F0 CC     call CCF0
+00C0:020E AD D8 0A     mov  a,[0AD8]
+00C0:0211 8D 88 10     mov  [1088],a
+00C0:0214 AD D9 0A     mov  a,[0AD9]
+00C0:0217 8D 89 10     mov  [1089],a
+00C0:021A 20 76 54     call 5476
+00C0:021D 4C AD 00     jmp  00AD
+00C0:0220 64 55        mov  [55],0
+00C0:0222 A5 03        mov  a,[03]
+00C0:0224 29 40        and  a,40
+00C0:0226 F0 1E        jz   0246
+00C0:0228 A9 FB        mov  a,FB
+00C0:022A 20 3C CA     call CA3C
+00C0:022D C9 00        cmp  a,00
+00C0:022F F0 15        jz   0246
+00C0:0231 20 32 66     call 6632
+00C0:0234 AD D8 0A     mov  a,[0AD8]
+00C0:0237 8D 88 10     mov  [1088],a
+00C0:023A AD D9 0A     mov  a,[0AD9]
+00C0:023D 8D 89 10     mov  [1089],a
+00C0:0240 20 76 54     call 5476
+00C0:0243 4C AD 00     jmp  00AD
+00C0:0246 20 8C 0F     call 0F8C
+00C0:0249 20 1D 1A     call 1A1D
+00C0:024C 20 95 4C     call 4C95
+00C0:024F 20 37 21     call 2137
+00C0:0252 20 2B 61     call 612B
+00C0:0255 20 C5 1E     call 1EC5
+00C0:0258 20 64 1E     call 1E64
+00C0:025B 20 0A 42     call 420A
+00C0:025E 4C AD 00     jmp  00AD
+00C0:0261 60           ret
+}}}
