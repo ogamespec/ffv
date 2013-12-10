@@ -8,23 +8,23 @@
 00C0:0002 FB           xce
 00C0:0003 C2 10        clr  p,10
 00C0:0005 E2 20        set  p,20
-00C0:0007ю9C 0D 42     mov  [420D],0
-00C0:000A 9C 0B 42     mov  [420B],0
-00C0:000D 9C 0C 42     mov  [420C],0
+00C0:0007ю9C 0D 42     mov  [420D],0            // cycle speed 2.68 Mhz
+00C0:000A 9C 0B 42     mov  [420B],0            // DMA disable all
+00C0:000D 9C 0C 42     mov  [420C],0            // H-DMA disable all
 00C0:0010 A9 8F        mov  a,8F
-00C0:0012 8D 00 21     mov  [2100],a
+00C0:0012 8D 00 21     mov  [2100],a            // Screen off, brightness = 0xF
 00C0:0015 A9 00        mov  a,00
-00C0:0017 8D 00 42     mov  [4200],a
+00C0:0017 8D 00 42     mov  [4200],a            // NMI, V-count, H-count, joypad disable
 00C0:001A A9 00        mov  a,00
 00C0:001C EB           swap a
 00C0:001D A2 FF 1F     mov  x,1FFF
-00C0:0020 9A           mov  s,x
+00C0:0020 9A           mov  s,x                 // stack = 0x1fff
 00C0:0021 A9 00        mov  a,00
 00C0:0023 48           push a
-00C0:0024 AB           pop  db
+00C0:0024 AB           pop  db                  // DB = 0
 00C0:0025 A2 00 0B     mov  x,0B00
 00C0:0028 DA           push x
-00C0:0029 2B           pop  d
+00C0:0029 2B           pop  d                   // D = 0x0B00
 00C0:002A A2 00 00     mov  x,0000
 00C0:002D 86 06        mov  [06],x
 00C0:002F 22 00 00 C4  call far C40000      // SPC init?
