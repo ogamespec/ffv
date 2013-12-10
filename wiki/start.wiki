@@ -87,13 +87,13 @@ C2:A000 - [GameMenu]
 00C0:009B A9 81        mov  a,81
 00C0:009D 8D 00 42     mov  [4200],a        // NMI = enable, V/H Count = disable, Joypad=Enable
 00C0:00A0 58           ei
-00C0:00A1 20 17 A2     call A217            // тут начинается игра.
+00C0:00A1 20 17 A2     call A217            // GameLoop
 00C0:00A4 64 57        mov  [57],0
 00C0:00A6 64 58        mov  [58],0
 00C0:00A8 64 55        mov  [55],0
 00C0:00AA 4C AD 00     jmp  00AD
 
-// main loop?
+
 00C0:00AD 20 41 4E     call 4E41
 00C0:00B0 A5 02        mov  a,[02]
 00C0:00B2 29 40        and  a,40
