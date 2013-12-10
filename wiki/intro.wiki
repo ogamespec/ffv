@@ -1,0 +1,135 @@
+#In-game intro
+
+C3:0000 -- тут непосредственно воспроизводится начальная заставка.
+
+{{{
+
+00C0:44C8ю48           push a
+00C0:44C9 9C 0B 42     mov  [420B],0        // Regular DMA Channel Enable = 0
+00C0:44CC 9C 0C 42     mov  [420C],0        // H-DMA Channel Enable = 0
+00C0:44CF A9 00        mov  a,00
+00C0:44D1 8D 00 42     mov  [4200],a        // NMI, V/H Count, and Joypad Enable = 0
+00C0:44D4 A9 80        mov  a,80
+00C0:44D6 8D 00 21     mov  [2100],a        // screen off, brightness = 0
+00C0:44D9 78           di
+00C0:44DA 68           pop  a
+00C0:44DB 22 00 00 C3  call far C30000      // <---- прыгаем в другой модуль
+00C0:44DF 20 E3 44     call 44E3
+00C0:44E2 60           ret
+
+
+00C0:44E3 C2 10        clr  p,10            // 16-bit XY
+00C0:44E5 E2 20        set  p,20            // 8-bit A
+00C0:44E7юA9 00        mov  a,00
+00C0:44E9 48           push a
+00C0:44EA AB           pop  db
+00C0:44EB A2 00 0B     mov  x,0B00
+00C0:44EE DA           push x
+00C0:44EF 2B           pop  d               // D = 0x0B00
+00C0:44F0 9C 0B 42     mov  [420B],0        // DMA disable all
+00C0:44F3 9C 0C 42     mov  [420C],0        // H-DMA disable all
+00C0:44F6 A9 8F        mov  a,8F
+00C0:44F8 8D 00 21     mov  [2100],a        // Screen off, brightness = 0xF
+00C0:44FB A9 00        mov  a,00
+00C0:44FD 8D 00 42     mov  [4200],a        // NMI, V-counter, H-counter, joypad disable
+00C0:4500 A9 00        mov  a,00
+00C0:4502 EB           swap a
+00C0:4503 20 4A 4E     call 4E4A
+00C0:4506 20 69 4E     call 4E69
+00C0:4509 60           ret
+
+
+// Какая-то работа с памятью.
+
+
+00C0:4E4AюA9 5C        mov  a,5C
+00C0:4E4C 8D 00 1F     mov  [1F00],a
+00C0:4E4F 8D 04 1F     mov  [1F04],a
+00C0:4E52 A2 D1 02     mov  x,02D1
+00C0:4E55 8E 01 1F     mov  [1F01],x
+00C0:4E58 A9 C0        mov  a,C0
+00C0:4E5A 8D 03 1F     mov  [1F03],a
+00C0:4E5D A2 46 04     mov  x,0446
+00C0:4E60 8E 05 1F     mov  [1F05],x
+00C0:4E63 A9 C0        mov  a,C0
+00C0:4E65 8D 07 1F     mov  [1F07],a
+00C0:4E68 60           ret
+
+// Производится установка регистров PPU
+
+
+00C0:4E69 A9 80        mov  a,80
+00C0:4E6B 8D 00 21     mov  [2100],a        // Screen off, brightness = 0
+00C0:4E6E A9 00        mov  a,00
+00C0:4E70 8D 00 42     mov  [4200],a        // NMI, V-counter, H-counter, joypad disable
+00C0:4E73 9C 0B 42     mov  [420B],0        // DMA disable all
+00C0:4E76 9C 0C 42     mov  [420C],0        // H-DMA disable all
+00C0:4E79 A9 03        mov  a,03
+00C0:4E7B 8D 01 21     mov  [2101],a        // OAM size=0, name=0, base=3
+00C0:4E7E 9C 02 21     mov  [2102],0        // OAM address = 0x0000
+00C0:4E81 9C 03 21     mov  [2103],0        
+00C0:4E84 A9 09        mov  a,09
+00C0:4E86 8D 05 21     mov  [2105],a        // BG tile size=8x8, BG3 high priority, BG mode=1
+00C0:4E89 9C 06 21     mov  [2106],0        // Mosaic disable
+00C0:4E8C A9 00        mov  a,00
+00C0:4E8E 8D 0B 21     mov  [210B],a        // BG 1/2 tile data = 0/0
+00C0:4E91 A9 04        mov  a,04
+00C0:4E93 8D 0C 21     mov  [210C],a        // BG 3/4 tile data = 4/0
+00C0:4E96 A9 80        mov  a,80
+00C0:4E98 8D 15 21     mov  [2115],a        // VRAM increment = 0x80
+00C0:4E9B 9C 1A 21     mov  [211A],0        // Initial mode 7 = 0
+00C0:4E9E 9C 1B 21     mov  [211B],0        // 
+00C0:4EA1 A9 08        mov  a,08
+00C0:4EA3 8D 1B 21     mov  [211B],a        // mode7 matrix A = 8
+00C0:4EA6 9C 1C 21     mov  [211C],0
+00C0:4EA9 9C 1C 21     mov  [211C],0        // mode7 matrix B = 0
+00C0:4EAC 9C 1D 21     mov  [211D],0
+00C0:4EAF 9C 1D 21     mov  [211D],0        // mode7 matrix C = 0
+00C0:4EB2 9C 1E 21     mov  [211E],0
+00C0:4EB5 A9 08        mov  a,08
+00C0:4EB7 8D 1E 21     mov  [211E],a        // mode7 matrix D = 8
+00C0:4EBA A9 80        mov  a,80
+00C0:4EBC 8D 1F 21     mov  [211F],a        
+00C0:4EBF 8D 1F 21     mov  [211F],a        // mode7 center = 0x80
+00C0:4EC2 8D 20 21     mov  [2120],a
+00C0:4EC5 8D 20 21     mov  [2120],a        // mode7 center = 0x80
+00C0:4EC8 8D 21 21     mov  [2121],a        // CGRAM address = 0x80
+00C0:4ECB A9 BF        mov  a,BF
+00C0:4ECD 8D 23 21     mov  [2123],a        // BG 1/2 window settings = 0xF / 0xB
+00C0:4ED0 A9 0B        mov  a,0B
+00C0:4ED2 8D 24 21     mov  [2124],a        // BG 3/4 window settings = 0xB / 0
+00C0:4ED5 A9 BB        mov  a,BB
+00C0:4ED7 8D 25 21     mov  [2125],a        // OBJ/COL windows settings = 0xB / 0xB
+00C0:4EDA A9 08        mov  a,08
+00C0:4EDC 8D 26 21     mov  [2126],a        // window1 left = 8
+00C0:4EDF A9 F7        mov  a,F7
+00C0:4EE1 8D 27 21     mov  [2127],a        // window1 right = 0xF7
+00C0:4EE4 A9 FF        mov  a,FF
+00C0:4EE6 8D 28 21     mov  [2128],a        // window2 left = 0xFF
+00C0:4EE9 A9 00        mov  a,00
+00C0:4EEB 8D 29 21     mov  [2129],a        // window2 right = 0
+00C0:4EEE A9 01        mov  a,01
+00C0:4EF0 8D 2A 21     mov  [212A],a        // BG 1, 2, 3 and 4 Window Logic Settings
+00C0:4EF3 A9 00        mov  a,00
+00C0:4EF5 8D 2B 21     mov  [212B],a        // Color and OBJ Window Logic Settings
+00C0:4EF8 A9 13        mov  a,13
+00C0:4EFA 8D 2C 21     mov  [212C],a        // Background and Object Enable (Main Screen)
+00C0:4EFD A9 04        mov  a,04
+00C0:4EFF 8D 2D 21     mov  [212D],a        // Background and Object Enable (Sub Screen)
+00C0:4F02 A9 17        mov  a,17
+00C0:4F04 8D 2E 21     mov  [212E],a        // Window Mask Designation for Main Screen
+00C0:4F07 9C 2F 21     mov  [212F],0        // Window Mask Designation for Sub Screen
+00C0:4F0A A9 22        mov  a,22
+00C0:4F0C 8D 30 21     mov  [2130],a        // Initial Settings for Color Addition
+00C0:4F0F A9 E0        mov  a,E0
+00C0:4F11 8D 32 21     mov  [2132],a        // Fixed Color Data
+00C0:4F14 A9 00        mov  a,00
+00C0:4F16 8D 33 21     mov  [2133],a        // Screen Initial Settings
+00C0:4F19 A9 FF        mov  a,FF
+00C0:4F1B 8D 01 42     mov  [4201],a        // Programmable I/O Port Output = 0xFF
+00C0:4F1E 9C 07 42     mov  [4207],0        // H-Count Timer (Upper 8 Bits) = 0
+00C0:4F21 9C 08 42     mov  [4208],0        // H-Count Timer MSB (Bit 0) = 0
+00C0:4F24 9C 09 42     mov  [4209],0        // V-Count Timer (Upper 8 Bits) = 0
+00C0:4F27 9C 0A 42     mov  [420A],0        // V-Count Timer MSB (Bit 0) = 0
+00C0:4F2A 60           ret
+}}}
