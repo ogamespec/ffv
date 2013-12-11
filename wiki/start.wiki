@@ -162,6 +162,7 @@ C0:A217 - [GameLoop] главная игровая петля (вроде бы)
 00C0:014F F0 05        jz   0156
 00C0:0151 64 58        mov  [58],0
 00C0:0153 4C AD 00     jmp  00AD
+
 00C0:0156 A5 6E        mov  a,[6E]
 00C0:0158 F0 06        jz   0160
 00C0:015A 20 5A 54     call 545A
@@ -235,6 +236,7 @@ C0:A217 - [GameLoop] главная игровая петля (вроде бы)
 00C0:01F4 F0 05        jz   01FB
 00C0:01F6 64 58        mov  [58],0
 00C0:01F8 4C AD 00     jmp  00AD
+
 00C0:01FB 20 11 CB     call CB11
 00C0:01FE A5 55        mov  a,[55]
 00C0:0200 F0 1E        jz   0220
@@ -249,6 +251,7 @@ C0:A217 - [GameLoop] главная игровая петля (вроде бы)
 00C0:0217 8D 89 10     mov  [1089],a
 00C0:021A 20 76 54     call 5476
 00C0:021D 4C AD 00     jmp  00AD
+
 00C0:0220 64 55        mov  [55],0
 00C0:0222 A5 03        mov  a,[03]
 00C0:0224 29 40        and  a,40
@@ -275,4 +278,53 @@ C0:A217 - [GameLoop] главная игровая петля (вроде бы)
 00C0:025B 20 0A 42     call 420A
 00C0:025E 4C AD 00     jmp  00AD
 00C0:0261 60           ret
+
+00C0:0262 20 3D 0D     call 0D3D
+00C0:0265 A5 58        mov  a,[58]
+00C0:0267 F0 05        jz   026E
+00C0:0269 64 58        mov  [58],0
+00C0:026B 4C AD 00     jmp  00AD
+
+00C0:026E AD FB 10     mov  a,[10FB]
+00C0:0271 C9 00        cmp  a,00
+00C0:0273 D0 0C        jnz  0281
+00C0:0275 20 8F 54     call 548F
+00C0:0278 A2 1C 00     mov  x,001C
+00C0:027B 20 6A 04     call 046A
+00C0:027E 4C AD 00     jmp  00AD
+
+00C0:0281 20 69 CA     call CA69
+00C0:0284 A5 55        mov  a,[55]
+00C0:0286 F0 12        jz   029A
+00C0:0288 A9 FF        mov  a,FF
+00C0:028A 20 3C CA     call CA3C
+00C0:028D C9 00        cmp  a,00
+00C0:028F D0 09        jnz  029A
+00C0:0291 20 F0 CC     call CCF0
+00C0:0294 20 76 54     call 5476
+00C0:0297 4C AD 00     jmp  00AD
+
+00C0:029A 64 55        mov  [55],0
+00C0:029C 20 AB 32     call 32AB
+00C0:029F 20 C2 11     call 11C2
+00C0:02A2 A5 6E        mov  a,[6E]
+00C0:02A4 F0 06        jz   02AC
+00C0:02A6 20 5A 54     call 545A
+00C0:02A9 4C AD 00     jmp  00AD
+
+00C0:02AC A5 58        mov  a,[58]
+00C0:02AE F0 05        jz   02B5
+00C0:02B0 64 58        mov  [58],0
+00C0:02B2 4C AD 00     jmp  00AD
+
+00C0:02B5 20 E4 1A     call 1AE4
+00C0:02B8 20 AC 3B     call 3BAC
+00C0:02BB 20 95 4C     call 4C95
+00C0:02BE 20 34 48     call 4834
+00C0:02C1 20 7C 23     call 237C
+00C0:02C4 20 B3 39     call 39B3
+00C0:02C7 20 42 28     call 2842
+00C0:02CA 20 0A 42     call 420A
+00C0:02CD 4C AD 00     jmp  00AD
+00C0:02D0 60           ret
 }}}
