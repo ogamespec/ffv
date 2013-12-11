@@ -4,90 +4,91 @@ C0:A449 - [GameScript] - выполняет действия
 
 {{{
 
-00C0:A217 64 D2        mov  [D2],0
-00C0:A219 9C AA 16     mov  [16AA],0
+00C0:A217 64 D2        mov  [D2],0		// [D2] = 0
+00C0:A219 9C AA 16     mov  [16AA],0		// [16AA] = 0
 
-00C0:A21C C2 20        clr  p,20
-00C0:A21E A4 06        mov  y,[06]
-00C0:A220 84 D4        mov  [D4],y
+00C0:A21C C2 20        clr  p,20		// 16bit A
+00C0:A21E A4 06        mov  y,[06]		// y = [06]
+00C0:A220 84 D4        mov  [D4],y		// [D4] = [06]
 00C0:A222 A5 CE        mov  a,[CE]
 00C0:A224 0A           shl  a
 00C0:A225 18           clc
 00C0:A226 65 CE        adc  a,[CE]
-00C0:A228 AA           mov  x,a
-00C0:A229 BF 20 33 C8  mov  a,[far C83320+x]
-00C0:A22D 99 26 11     mov  [1126+y],a
-00C0:A230 85 D6        mov  [D6],a
-00C0:A232 BF 22 33 C8  mov  a,[far C83322+x]
+00C0:A228 AA           mov  x,a			// x = 3 * [CE]
+00C0:A229 BF 20 33 C8  mov  a,[far C83320+x]	// a = [C83320 + x]
+00C0:A22D 99 26 11     mov  [1126+y],a		// [1126 + y] = a
+00C0:A230 85 D6        mov  [D6],a		// [D6] = a
+00C0:A232 BF 22 33 C8  mov  a,[far C83322+x]	// a = [C83322 + x] & 0xff
 00C0:A236 29 FF 00     and  a,00FF
-00C0:A239 99 28 11     mov  [1128+y],a
-00C0:A23C 85 D8        mov  [D8],a
+00C0:A239 99 28 11     mov  [1128+y],a		// [1128 + y] = a
+00C0:A23C 85 D8        mov  [D8],a		// [D8] = a
 00C0:A23E A9 01 00     mov  a,0001
-00C0:A241 99 66 11     mov  [1166+y],a
-00C0:A244 A5 06        mov  a,[06]
+00C0:A241 99 66 11     mov  [1166+y],a		// [1166 + y] = 1
+00C0:A244 A5 06        mov  a,[06]		// a = [06]
 
 ----------------------------------------
 
-00C0:A246 E2 20        set  p,20
-00C0:A248 64 BA        mov  [BA],0
-00C0:A24A A6 D4        mov  x,[D4]
+00C0:A246 E2 20        set  p,20		// 8bit A
+
+00C0:A248 64 BA        mov  [BA],0		// [BA] = 0
+00C0:A24A A6 D4        mov  x,[D4]		// x = [D4]
 00C0:A24C A0 05 00     mov  y,0005
-00C0:A24F B7 D6        mov  a,[far[D6]+y]
+00C0:A24F B7 D6        mov  a,[far[D6]+y]	// [E3] = [[D6] + 5]
 00C0:A251 85 E3        mov  [E3],a
 00C0:A253 88           dec  y
 00C0:A254 B7 D6        mov  a,[far[D6]+y]
-00C0:A256 85 E2        mov  [E2],a
+00C0:A256 85 E2        mov  [E2],a		// [E2] = [[D6] + 4]
 00C0:A258 88           dec  y
 00C0:A259 B7 D6        mov  a,[far[D6]+y]
-00C0:A25B 85 E1        mov  [E1],a
+00C0:A25B 85 E1        mov  [E1],a		// [E1] = [[D6] + 3]
 00C0:A25D 88           dec  y
 00C0:A25E B7 D6        mov  a,[far[D6]+y]
-00C0:A260 85 E0        mov  [E0],a
+00C0:A260 85 E0        mov  [E0],a		// [E0] = [[D6] + 2]
 00C0:A262 88           dec  y
 00C0:A263 B7 D6        mov  a,[far[D6]+y]
-00C0:A265 85 DF        mov  [DF],a
+00C0:A265 85 DF        mov  [DF],a		// [DF] = [[D6] + 1]
 00C0:A267 88           dec  y
 00C0:A268 B7 D6        mov  a,[far[D6]+y]
-00C0:A26A 85 DE        mov  [DE],a
+00C0:A26A 85 DE        mov  [DE],a		// [DE] = [[D6] + 0]
 00C0:A26C C9 C7        cmp  a,C7
-00C0:A26E D0 08        jnz  A278
-00C0:A270 E6 D2        inc  [D2]
+00C0:A26E D0 08        jnz  A278                // if ( [DE] != 199 ) goto A278;
+00C0:A270 E6 D2        inc  [D2]		// [D2]++
 00C0:A272 20 0A A4     call A40A		<<<<<<<<<<<<<<<<
-00C0:A275 4C CB A2     jmp  A2CB
+00C0:A275 4C CB A2     jmp  A2CB		// goto A2CB;
 
-00C0:A278 C9 CF        cmp  a,CF
+00C0:A278 C9 CF        cmp  a,CF		// 207
 00C0:A27A D0 08        jnz  A284
 00C0:A27C E6 D2        inc  [D2]
 00C0:A27E 20 C9 A3     call A3C9		<<<<<<<<<<<<<<<<
 00C0:A281 4C CB A2     jmp  A2CB
 
-00C0:A284 C9 CE        cmp  a,CE
+00C0:A284 C9 CE        cmp  a,CE		// 206
 00C0:A286 D0 06        jnz  A28E
 00C0:A288 20 C9 A3     call A3C9		<<<<<<<<<<<<<<<<
 00C0:A28B 4C CB A2     jmp  A2CB
 
-00C0:A28E C9 CD        cmp  a,CD
+00C0:A28E C9 CD        cmp  a,CD		// 205
 00C0:A290 D0 06        jnz  A298
 00C0:A292 20 80 A3     call A380		<<<<<<<<<<<<<<<<
 00C0:A295 4C CB A2     jmp  A2CB
 
-00C0:A298 C9 FF        cmp  a,FF
+00C0:A298 C9 FF        cmp  a,FF		// 255
 00C0:A29A D0 0A        jnz  A2A6
 00C0:A29C A4 D4        mov  y,[D4]
 00C0:A29E F0 7C        jz   A31C
 00C0:A2A0 20 65 A3     call A365		<<<<<<<<<<<<<<<<
 00C0:A2A3 4C CB A2     jmp  A2CB
 
-00C0:A2A6 C9 05        cmp  a,05
+00C0:A2A6 C9 05        cmp  a,05		// 5
 00C0:A2A8 90 12        jnc  A2BC
-00C0:A2AA C9 70        cmp  a,70
+00C0:A2AA C9 70        cmp  a,70		// 112
 00C0:A2AC 90 1A        jnc  A2C8
-00C0:A2AE C9 80        cmp  a,80
+00C0:A2AE C9 80        cmp  a,80		// 128
 00C0:A2B0 90 07        jnc  A2B9
-00C0:A2B2 C9 A0        cmp  a,A0
+00C0:A2B2 C9 A0        cmp  a,A0		// 160
 00C0:A2B4 90 09        jnc  A2BF
 00C0:A2B6 38           stc
-00C0:A2B7 E9 20        sbc  a,20
+00C0:A2B7 E9 20        sbc  a,20		// a -= 32
 
 00C0:A2B9 4C 49 A4     jmp  A449 		<<<<<<<<<<<<<<<  GameScript
 
@@ -102,7 +103,7 @@ C0:A449 - [GameScript] - выполняет действия
 
 ----------------------------------------
 
-00C0:A2CB C2 20        clr  p,20
+00C0:A2CB C2 20        clr  p,20		// 16bit A
 00C0:A2CD A6 D4        mov  x,[D4]
 00C0:A2CF F0 44        jz   A315
 00C0:A2D1 A5 D6        mov  a,[D6]
@@ -126,18 +127,18 @@ C0:A449 - [GameScript] - выполняет действия
 00C0:A2FA 85 D8        mov  [D8],a
 00C0:A2FC A5 06        mov  a,[06]
 
-00C0:A2FE E2 20        set  p,20
-00C0:A300 64 D2        mov  [D2],0
-00C0:A302 C2 20        clr  p,20
+00C0:A2FE E2 20        set  p,20		// 8bit A
+00C0:A300 64 D2        mov  [D2],0		// [D2] = 0
+00C0:A302 C2 20        clr  p,20		// 16bit A
 00C0:A304 E0 00 00     cmp  x,0000
 00C0:A307 F0 0C        jz   A315
 00C0:A309 80 C0        jr8  A2CB
 
 00C0:A30B BD 22 11     mov  a,[1122+x]
-00C0:A30E 85 D6        mov  [D6],a
+00C0:A30E 85 D6        mov  [D6],a		// [D6] = [1122 + x]
 00C0:A310 BD 24 11     mov  a,[1124+x]
-00C0:A313 85 D8        mov  [D8],a
-00C0:A315 A5 06        mov  a,[06]
-00C0:A317 E2 20        set  p,20
+00C0:A313 85 D8        mov  [D8],a		// [D8] = [1124 + x]
+00C0:A315 A5 06        mov  a,[06]		// a = [06]
+00C0:A317 E2 20        set  p,20		// 8bit A
 00C0:A319 4C 48 A2     jmp  A248
 }}}
