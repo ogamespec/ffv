@@ -13,9 +13,9 @@
   * DB = 0
   * Zero page offset = 0x0B00
 
-Zero-page vars:
+Zero-page vars, в скобках длина в байтах:
 
-  * [06] (u16) : null
+  * 06[2]  : null (всегда const 0x0000)
 
 == C1:0000 ==
 
