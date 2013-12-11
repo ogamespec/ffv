@@ -13,9 +13,11 @@
   * DB = 0
   * Zero page offset = 0x0B00
 
-Zero-page vars, в скобках длина в байтах:
+Zero-page vars:
 
-  * 06[2]  : null (всегда const 0x0000)
+  * 06 (16bit) : null (всегда const 0x0000)
+  * CE : номер игрового сценария
+  * 55 : начать битву, если не равно 0
 
 == C1:0000 ==
 
