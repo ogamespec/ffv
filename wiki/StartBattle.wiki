@@ -1,5 +1,7 @@
 Вызывается из start (где-то ближе к концу главного цикла).
 
+C2:0000 - [BattleEngine]
+
 {{{
 00C0:CCF0 A6 06        mov  x,[06]		// x = null
 00C0:CCF2 8E A8 16     mov  [16A8],x		// [16A8] = null
