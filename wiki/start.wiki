@@ -62,10 +62,10 @@ C0:A217 - [GameLoop] главная игровая петля (вроде бы)
 00C0:0066 85 BC        mov  [BC],a
 00C0:0068 1A           inc  a
 00C0:0069 85 B9        mov  [B9],a
-00C0:006B AD D8 0A     mov  a,[0AD8]
+00C0:006B AD D8 0A     mov  a,[0AD8]       // World X
 00C0:006E 8D 88 10     mov  [1088],a
-00C0:0071 AD D9 0A     mov  a,[0AD9]
-00C0:0074 8D 89 10     mov  [1089],a
+00C0:0071 AD D9 0A     mov  a,[0AD9]       // World Y
+00C0:0074 8D 89 10     mov  [1089],a       
 00C0:0077 20 5D 54     call 545D
 00C0:007A 4C AD 00     jmp  00AD
 
