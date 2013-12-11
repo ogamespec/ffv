@@ -13,6 +13,10 @@
   * DB = 0
   * Zero page offset = 0x0B00
 
+Zero-page vars:
+
+  * [06] (u16) : null
+
 == C1:0000 ==
 
 == C2:0000 ==
