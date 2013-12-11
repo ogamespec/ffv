@@ -294,7 +294,7 @@ C0:A217 - CutScene aka [GameLoop]. игровой сценарий (различ
 00C0:027E 4C AD 00     jmp  00AD
 
 00C0:0281 20 69 CA     call CA69
-00C0:0284 A5 55        mov  a,[55]
+00C0:0284 A5 55        mov  a,[55]               // [55] = 1 - запустить битву
 00C0:0286 F0 12        jz   029A
 00C0:0288 A9 FF        mov  a,FF
 00C0:028A 20 3C CA     call CA3C
