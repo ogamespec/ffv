@@ -13,6 +13,7 @@
 
 Статистика каждого персонажа занимает 80 байт.
 
+{{{
 // character
 enum { BUTZ, LENNA, GALUF, FARIS, CARA, NONE=0xFF };
 
@@ -91,6 +92,7 @@ typedef struct stats_t
     u8          unk[10];        // padding?
 
 } stats_t;
+}}}
 
 == Jobs ==
 
