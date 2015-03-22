@@ -1,0 +1,111 @@
+Игровые персонажи.
+
+В партии может быть до 4х персонажей. Всего в игре 5 персонажей, но после смерти Галуфа его место занимает Cara, в итоге Барц остается один среди девок.
+
+Персонажи игры:
+  * Барц (Butz)
+  * Лена (Leena)
+  * Фарис (Faris)
+  * Галуф (Galuf)
+  * Кара (Cara)
+
+## Stats ##
+
+Статистика и атрибуты каждого персонажа занимает 80 байт.
+
+```
+// character
+enum { BUTZ, LENNA, GALUF, FARIS, CARA, NONE=0xFF };
+
+// job
+enum { KNIGHT, MONK, THIEF, DRAGOON, NINJA, SAMURAI, BERSERKER,
+       ARCHER, MYSTIC_KNIGHT, WHITE_MAGE, BLACK_MAGE, TIME_MAGE,
+       SUMMONER, BLUE_MAGE, RED_MAGE, BEAST_MASTER, CHEMIST,
+       GEOMANCER, BARD, DANCER, MIMIC, NORMAL };
+
+// ability 0-3
+enum { NONE, OTHER, ITEM, ROW, DEF, FIGHT, GUARD, KICK, BUILD_UP,
+       MANTRA, ESCAPE, STEAL, CAPTURE, JUMP, DRAGON_SWORD, SMOKE, IMAGE,
+       THROW, SWORD_SLAP, GIL_TOSS, SLASH, ANIMALS, AIM, XFIGHT, CONJURE,
+       OBSERVE, ANALYZE, TAME, CONTROL, CATCH, RELEASE, COMBINE, DRINK,
+       PRAY, REVIVE, TERRAIN, DUMMY01, HIDE, SHOW, DUMMY02, SING,
+       FLIRT, DANCE, MIMIC, MGC_SWORD, MGC_SWORD, MGC_SWORD, MGC_SWORD, MGC_SWORD, 
+       MGC_SWORD, WHITE, WHITE, WHITE, WHITE, WHITE, WHITE, BLACK,
+       BLACK, BLACK, BLACK, BLACK, BLACK, DIMEN, DIMEN, DIMEN, 
+       DIMEN, DIMEN, DIMEN, SUMMON, SUMMON, SUMMON, SUMMON, SUMMON, 
+       RED, RED, RED, XMAGIC, BLUE };
+
+// status
+#define BLIND  0x01
+#define ZOMBIE 0x02
+#define POISON 0x04
+#define FLY    0x08
+#define MINI   0x10
+#define TOAD   0x20
+#define STONE  0x40
+#define DEAD   0x80
+                 
+typedef struct stats_t
+{
+    u8          character;
+    u8          job;
+    u8          level;
+    u24         experience;
+    u16         hp, hp_max;     // 9999 max
+    u16         mp, mp_max;     // 9999 max
+    u8          head, body;     // equipment
+
+    u8          relic;
+    u8          rhand1, lhand1;   // equipment
+    u8          rhand2, lhand2;  // worn in battle, overrides L/R 1
+    u8          unk8;           // Catch / can equip?
+    u8          ability[4];
+    u8          status;
+    u8          unk[5];
+
+    u8          unk[3];         // generated
+    u8          weight?;        // generated based on equipment 
+    u8          strength;       // 99 max, affected by aging 
+    u8          agility;        // 99 max, affected by aging 
+    u8          vitality;       // 99 max, affected by aging 
+    u8          mag_power;      // 99 max, affected by aging 
+    u8          strength_max;
+    u8          agility_max;
+    u8          vitality_max;
+    u8          mag_power_max;
+    u8          evade?;          // generated based on equipment 
+    u8          defense;        // generated based on equipment
+    u8          mag_evade?;     // generated based on equipment
+    u8          mag_defense;    // generated based on equipment
+    
+    u8          unk[4];         // generated
+    u8          unk;            // generated
+    u8          unk[3];
+    u8          unk[2];         // generated
+    u8          job_level;
+    u16         abp;            // 999 max
+    u8          unk[3];         // generated
+
+    u8          can_equip[4];   // generated, based on job
+    u8          attack;         // generated based on equipment
+    u8          unk;            // generated
+    u8          unk[10];        // padding?
+
+} stats_t;
+```
+
+Имена, выученные абилки и Row хранятся в другом месте.
+
+Evade вычисляется по какой-то хитрой формуле.
+
+## Jobs ##
+
+В игре присутствует смена профессий.
+
+При выборе определенной профессии становятся доступны её абилки, которые со временем можно выучить.
+
+## Abilities ##
+
+Куча абилок, пассивных и активных, которые влияют на игровой процесс. Комбинируя абилки можно сделать прикольные комбинации. Гениальная система))
+
+Всего у каждого персонажа до 4х абилок: 2 стандартные, которые даются с профессией и ещё 2 на выбор.
