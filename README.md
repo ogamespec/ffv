@@ -6,7 +6,7 @@ Attempt to reverse engineer SNES FFV game.
 
 http://www.gamefaqs.com/snes/588331-final-fantasy-v/faqs/30040
 
-http://psxdev.ru/images/wys/ffv_title_screen.jpg
+<img src="http://psxdev.ru/images/wys/ffv_title_screen.jpg">
 
 == Game engine parts ==
 
