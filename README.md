@@ -10,8 +10,19 @@ http://www.gamefaqs.com/snes/588331-final-fantasy-v/faqs/30040
 
 == Game engine parts ==
 
-||<img src="http://psxdev.ru/images/wys/ffv_world.jpg" width=150px> <img src="http://psxdev.ru/images/wys/ffv_field.jpg" width=150px>||<img src="http://psxdev.ru/images/wys/ffv_battle.jpg" width=250px>||<img src="http://psxdev.ru/images/wys/ffv_menu.jpg" width=250px>||<img src="http://psxdev.ru/images/wys/ffv_bgfx.jpg" width=250px>||
-||[WorldMap]+[Field]=[Scene] C0:0000||[Battle] C1:0000, C2:0000||[Menu] C2:A000||[BGFX] C3:0000||
+<table>
+<tr><td><img src="http://psxdev.ru/images/wys/ffv_world.jpg" width=150px>
+  <img src="http://psxdev.ru/images/wys/ffv_field.jpg" width=150px></td>
+  <td><img src="http://psxdev.ru/images/wys/ffv_battle.jpg" width=250px></td>
+  <td><img src="http://psxdev.ru/images/wys/ffv_menu.jpg" width=250px></td>
+  <td><img src="http://psxdev.ru/images/wys/ffv_bgfx.jpg" width=250px></td>
+ </tr>
+ <tr><td>[WorldMap]+[Field]=[Scene] C0:0000</td<
+ <td>[Battle] C1:0000, C2:0000</td>
+ <td>[Menu] C2:A000</td>
+ <td>[BGFX] C3:0000</td>
+ </tr>
+ </table>
 
 == Sound engine ==
 
