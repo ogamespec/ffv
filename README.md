@@ -48,7 +48,7 @@ No SMC 512-byte header.
   * IRQ: 0xCEE4
   * [RESET]: 0xCEC0
 
-== Used tools ==
+=== Used tools ===
 
   * IDA for snes
   * no$sns debugger (http://problemkaputt.de/sns.htm)
