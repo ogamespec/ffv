@@ -48,6 +48,11 @@ No SMC 512-byte header.
   * IRQ: 0xCEE4
   * [RESET]: 0xCEC0
 
+== Used tools ==
+
+  * IDA for snes
+  * no$sns debugger (http://problemkaputt.de/sns.htm)
+
 Регистры SNES : http://en.wikibooks.org/wiki/Super_NES_Programming/SNES_Hardware_Registers
 
 http://nocash.emubase.de/fullsnes.htm
