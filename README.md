@@ -8,7 +8,7 @@ http://www.gamefaqs.com/snes/588331-final-fantasy-v/faqs/30040
 
 <img src="http://psxdev.ru/images/wys/ffv_title_screen.jpg">
 
-** Game engine parts **
+**Game engine parts**
 
 <table>
 <tr><td><img src="http://psxdev.ru/images/wys/ffv_world.jpg" width=150px>
