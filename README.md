@@ -24,7 +24,7 @@ http://www.gamefaqs.com/snes/588331-final-fantasy-v/faqs/30040
  </tr>
  </table>
 
-** Sound engine **
+**Sound engine**
 
   * C4:0000 - SPC init
   * C4:0004 - write to [00:1D00] 4 bytes before call: 
@@ -33,7 +33,7 @@ http://www.gamefaqs.com/snes/588331-final-fantasy-v/faqs/30040
     * 80 40 08 0F: fade-out ?
     * F2 22 08 0F: ??
 
-** ROM information **
+**ROM information**
 
 Used ROM : Final Fantasy V (J) [T+Eng1.1_RPGe].smc
 
@@ -41,7 +41,7 @@ Used ROM : Final Fantasy V (J) [T+Eng1.1_RPGe].smc
 
 No SMC 512-byte header.
 
-** ROM header (0xFFC0) **
+**ROM header (0xFFC0)**
 
   * Game title : "FINAL FANTASY 5      "
   * ROM makeup byte : 21, 0b00100001, [HiROM]
@@ -53,13 +53,13 @@ No SMC 512-byte header.
   * Checksum complement: 0D E0
   * Checksum: F2 1F
 
-** Interrupt vectors **
+**Interrupt vectors**
 
   * NMI: 0xCEE0
   * IRQ: 0xCEE4
   * [RESET]: 0xCEC0
 
-** Used tools **
+**Used tools**
 
   * IDA for snes
   * no$sns debugger (http://problemkaputt.de/sns.htm)
