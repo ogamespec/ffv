@@ -17,7 +17,7 @@ http://www.gamefaqs.com/snes/588331-final-fantasy-v/faqs/30040
   <td><img src="http://psxdev.ru/images/wys/ffv_menu.jpg" width=250px></td>
   <td><img src="http://psxdev.ru/images/wys/ffv_bgfx.jpg" width=250px></td>
  </tr>
- <tr><td>[WorldMap]+[Field]=[Scene] C0:0000</td<
+ <tr><td>[WorldMap]+[Field]=[Scene] C0:0000</td>
  <td>[Battle] C1:0000, C2:0000</td>
  <td>[Menu] C2:A000</td>
  <td>[BGFX] C3:0000</td>
