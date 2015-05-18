@@ -11,8 +11,8 @@ http://www.gamefaqs.com/snes/588331-final-fantasy-v/faqs/30040
 **Game engine parts**
 
 <table>
-<tr><td><img src="http://psxdev.ru/images/wys/ffv_world.jpg" width=150px>
-  <img src="http://psxdev.ru/images/wys/ffv_field.jpg" width=150px></td>
+<tr><td><nobr><img src="http://psxdev.ru/images/wys/ffv_world.jpg" width=150px>
+  <img src="http://psxdev.ru/images/wys/ffv_field.jpg" width=150px></nobr></td>
   <td><img src="http://psxdev.ru/images/wys/ffv_battle.jpg" width=250px></td>
   <td><img src="http://psxdev.ru/images/wys/ffv_menu.jpg" width=250px></td>
   <td><img src="http://psxdev.ru/images/wys/ffv_bgfx.jpg" width=250px></td>
