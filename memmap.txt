@@ -1,0 +1,7 @@
+// FFV Memory map.
+
+C0:0000 		HiRom Bank 0: Game Loop
+C1:0000 		HiRom Bank 1
+C2:0000 		HiRom Bank 2
+C3:0000 		HiRom Bank 3
+C4:0000 		HiRom Bank 4: SPC Music and SFX
