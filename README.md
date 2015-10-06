@@ -67,3 +67,20 @@ No SMC 512-byte header.
 Регистры SNES : http://en.wikibooks.org/wiki/Super_NES_Programming/SNES_Hardware_Registers
 
 http://nocash.emubase.de/fullsnes.htm
+
+** IDA and CPU M/X Flags **
+
+SNES CPU has weird flags in Native mode.
+
+  * REP #0x10 : Clear X Flag (X/Y Index registers are 16-bit)
+  * REP #0x20 : Clear M Flag (A register is 16-bit)
+  * SEP #0x10 : Set X Flag (8-bit X/Y regs)
+  * SEP #0x20 : Set M Flag (8-bit A register)
+
+These settings affect instruction size and sometimes IDA 65816 module fail to analyze code.
+
+To set those flags manually - press Alt+G to change "segment registers". CPU module will map M/X flags as m/x segment regs,
+so you can change it manually.
+
+To check current segregs values press Ctrl+Space.
+
