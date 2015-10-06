@@ -68,7 +68,7 @@ No SMC 512-byte header.
 
 http://nocash.emubase.de/fullsnes.htm
 
-** IDA and CPU M/X Flags **
+**IDA and CPU M/X Flags**
 
 SNES CPU has weird flags in Native mode.
 
