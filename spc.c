@@ -39,12 +39,12 @@ SpcCommand ()           // C4:0004
 /*
     SPC program chunks:
 
-[0] : C4:064D => 0x200                  0x17F0 bytes
-[1] : C4:1F95 => 0x2C00                 0x1C00
-[2] : C4:1E3F => 0x4800                 0x10E
-[3] : C4:1F4F => 0x1B00                 0x20
-[4] : C4:1F71 => 0x1A80                 0x10
-[5] : C4:1F83 => 0x1A00                 0x10
+[0] : C4:064D => 0x200                  0x17F0 bytes        code 
+[1] : C4:1F95 => 0x2C00                 0x1C00              data
+[2] : C4:1E3F => 0x4800                 0x10E               data
+[3] : C4:1F4F => 0x1B00                 0x20                data
+[4] : C4:1F71 => 0x1A80                 0x10                data
+[5] : C4:1F83 => 0x1A00                 0x10                data
 
 
 */

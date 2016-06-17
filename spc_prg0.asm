@@ -2,6 +2,14 @@
 
 // SPC is working closely with DSP for audio playback
 
+// Low memory map:
+// 0x2c..0x2d       WORD        Temp pointer for ClearUpperMem
+// 0xbf             BYTE        Mask (Main loop)
+// 0xc1             BYTE        Saved CPUI0    see SPC_Command
+// 0xc2             BYTE        Saved CPUI1
+// 0xc3             BYTE        Saved CPUI2
+// 0xc4             BYTE        Saved CPUI3
+
 start ()        // 0x200
 {
     P = 0;              // ZP = 0
@@ -49,7 +57,7 @@ start ()        // 0x200
     *(PUCHAR)0xfb = 0x80;       // T1TARGET
     *(PUCHAR)0xf1 = 3;          // CONTROL
 
-    sub_13c8 ();
+    ClearUpperMem ();
 
     DSP_Write (0x6d, 0xd2);
     DSP_Write (0x7d, 5);
@@ -79,6 +87,8 @@ start ()        // 0x200
     // SPC Main Loop
     //
 
+MainLoop:           // 0x028c
+
     while(1)
     {
         //
@@ -87,7 +97,7 @@ start ()        // 0x200
 
         while (1)
         {
-            sub_0d68 ();
+            SPC_Command ();
             if (*(PUCHAR)0xfd != 0 )        // T0OUT
                 break;
         }
@@ -163,7 +173,7 @@ start ()        // 0x200
             if ( Carry )
             {
                 *(PUCHAR)0x05 = x;
-                sub_0b43 ();
+                sub_0b43 (x);
             }
 
             x += 2;
@@ -189,7 +199,7 @@ start ()        // 0x200
             if ( Carry )
             {
                 *(PUCHAR)0x05 = x;
-                sub_0b43 ();
+                sub_0b43 (x);
             }
 
             x -= 2;
@@ -1437,8 +1447,6 @@ DSP_Write (y, a)            // 0x0655
 0be8: d0 01     bne   $0beb
 0bea: 6f        ret
 
---------------------------------------------------------------------------------------
-
 0beb: 7d        mov   a,x
 0bec: 28 0f     and   a,#$0f
 0bee: c4 34     mov   $34,a
@@ -1647,163 +1655,226 @@ DSP_Write (y, a)            // 0x0655
 
 --------------------------------------------------------------------------------------
 
-0d68: f8 f4     mov   x,$f4
-0d6a: f0 3b     beq   $0da7
-0d6c: ba f6     movw  ya,$f6
-0d6e: da c3     movw  $c3,ya
-0d70: ba f4     movw  ya,$f4
-0d72: da c1     movw  $c1,ya
-0d74: c4 f4     mov   $f4,a
-0d76: 64 f4     cmp   a,$f4
-0d78: f0 fc     beq   $0d76
-0d7a: 5d        mov   x,a
-0d7b: 10 0d     bpl   $0d8a
-0d7d: c8 fe     cmp   x,#$fe
-0d7f: d0 03     bne   $0d84
-0d81: 5f db 12  jmp   $12db
-0d84: 8f 00 f4  mov   $f4,#$00
-0d87: 5f fe 0f  jmp   $0ffe
-0d8a: c8 01     cmp   x,#$01
-0d8c: f0 1a     beq   $0da8
-0d8e: c8 03     cmp   x,#$03
-0d90: f0 16     beq   $0da8
-0d92: 8f 00 f4  mov   $f4,#$00
-0d95: c8 02     cmp   x,#$02
-0d97: d0 03     bne   $0d9c
-0d99: 5f e2 0e  jmp   $0ee2
-0d9c: c8 10     cmp   x,#$10
-0d9e: 90 07     bcc   $0da7
-0da0: c8 20     cmp   x,#$20
-0da2: b0 03     bcs   $0da7
-0da4: 5f a5 0f  jmp   $0fa5
-0da7: 6f        ret
+// Command handler
+
+SPC_Command ()         // 0x0d68
+{
+    //
+    // Skip zero cmd
+    //
+
+    x = *(PUCHAR)0xf4;          // CPUI0
+    if ( x == 0 )
+        return;
+
+    //
+    // Save input data
+    //
+
+    *(PUSHORT)0xc3 = *(PUSHORT)0xf6;    // ya = CPUI3 / CPUI2
+    *(PUSHORT)0xc1 = *(PUSHORT)0xf4;    // ya = CPUI1 / CPUI0
+
+    //
+    // Wait response
+    //
+
+    // a = *(PUCHAR)0xf4;   <-- From previous operation (CPUI0)
+
+    *(PUCHAR)0xf4 = a;                  // CPUO0
+
+    while ( a != *(PUCHAR)0xf4 ) ;          // Wait
+
+    //
+    // Handle command
+    //
+
+    if ( a >= 0x80 )
+    {
+        if ( a == 0xFE )
+            sub_12db ();        // Jump really
+        else
+        {
+            // 0x80 ... 0xFF, except 0xFE
+
+            *(PUCHAR)0xf4 = 0;          // CPUO0
+
+            sub_0ffe ();        // Jump really
+        }
+    }
+    else
+    {
+        if ( a == 1 || a == 3 )
+        {
+            sub_0da8 ();            // Jump really
+        }
+        else
+        {
+            *(PUCHAR)0xf4 = 0;          // CPUO0
+
+            if ( a == 2 )
+                sub_0ee2 ();    // Jump really
+            else if ( a >= 0x10 && a < 0x20 )
+                sub_0fa5 ();        // Jump really
+            else 
+                return;
+        }
+    }
+}
+
+// Spc command 1 and 3
+
+sub_0da8 ()         // 0x0da8
+{
+    DSP_Write ( 0x5c, 0xff );
+
+    *(PUCHAR)0xf1 = 0;          // CONTROL
+    *(PUCHAR)0xfa = 0x40;           // T0TARGET
+    *(PUCHAR)0xf1 = 1;          // CONTROL
+
+    a = *(PUCHAR)0xfd;      // T0OUT
+    while ( a == *(PUCHAR)0xfd ) ;      // Wait
+
+    *(PUCHAR)0xf1 = 0;          // CONTROL
+    *(PUCHAR)0xfa = 0x24;           // T0TARGET
+    *(PUCHAR)0xf1 = 1;          // CONTROL
+
+    a = sub_12db ();
+
+    if ( *(PUCHAR)0xc1 == 3 )
+    {
+        sub_13de ();
+        a = 0;
+    }
+
+    //
+    // Reset internal variables
+    //
+
+    *(PUCHAR)0xec = *(PUCHAR)0xc2;
+
+    y = a;
+    *(PUSHORT)0xb9 = ya;
+    *(PUCHAR)0xbb = a;
+    *(PUSHORT)0xc9 = ya;
+    *(PUSHORT)0xcb = ya;
+    *(PUSHORT)0xcd = ya;
+    *(PUCHAR)0xc5 = a;
+    *(PUCHAR)0xc6 = a;
+    *(PUCHAR)0xc7 = a;
+    *(PUCHAR)0xbe.1 = 0;
+    *(PUSHORT)0xbc = ya;
+    *(PUCHAR)0xb4 = a;
+    *(PUCHAR)0xb7 = a;
+    *(PUCHAR)0x9c = a;
+    *(PUCHAR)0x9e = a;
+    *(PUCHAR)0x9c.7 = 1;
+    *(PUCHAR)0x9e.7 = 1;
+    *(PUCHAR)0xa3 = a;
+    *(PUCHAR)0xa5 = a;
+    *(PUCHAR)0xa8 = a;
+    *(PUCHAR)0xaa = a;
+    *(PUCHAR)0xa8.7 = 1;
+    *(PUCHAR)0xaa.7 = 1;
+    *(PUCHAR)0xaf = a;
+    *(PUCHAR)0xb1 = a;
+    *(PUSHORT)0xd6 = ya;
+    *(PUSHORT)0xcf = ya;
+    *(PUCHAR)0xd1 = a;
+    *(PUSHORT)0xd8 = ya;
+    *(PUCHAR)0x7d = 1;
+    *(PUCHAR)0x7e = 0xff;
+    *(PUCHAR)0xb8 = 0xff;
+    if ( *(PUCHAR)0xbe.7 == 0 )
+        *(PUCHAR)0xc0 = a;
+
+    DSP_Write (0x4d, 0);
+    DSP_Write (0x0d, 0);
+    DSP_Write (0x2c, 0);
+    DSP_Write (0x3c, 0);
+
+    ClearUpperMem ();
+
+    if ( *(PUCHAR)0x04.3 == 0 )
+    {
+        if ( *(PUCHAR)0xeb == *(PUCHAR)0xec )
+        {
+            sub_1587 ();
+        }
+        else
+        {
+            x = 0x10;
+            while (1)
+            {
+                a = *(PUCHAR)(0x1c01 + x);
+                *(PUCHAR)(0x0b + x) = a;
+                x--;
+                if ( x == 0 )
+                    break;
+            }
+
+            *(PUCHAR)0x06 = *(PUCHAR)0x1c00;
+            *(PUCHAR)0x07 = *(PUCHAR)0x1c01;
+            ya = 0x1c14;
+            ya -= *(PUSHORT)0x06;
+            *(PUSHORT)0x06 = ya;
+
+            x = 0xe;
+            *(PUCHAR)0xbf = 0x80;                   // Mask
+            *(PUSHORT)0x34 = *(PUSHORT)0x1c12;
+
+            while (1)
+            {
+                a = *(PUCHAR)(0xc + x);
+                y = *(PUCHAR)(0xd + x);
+
+                if ( ya != *(PUSHORT)0x34 )
+                {
+                    *(PUCHAR)0xb9 |= *(PUCHAR)0xbf;
+                    ya += *(PUSHORT)0x06;
+
+                    *(PUCHAR)(0xc + x) = a;
+                    *(PUCHAR)(0xd + x) = y;
+
+                    sub_0eba ();
+                }
+
+                x -= 2;
+                *(PUCHAR)0xbf >>= 1;
+                if ( *(PUCHAR)0xbf == 0 )
+                    break;
+            }
+        }
+
+        a = *(PUCHAR)0xc3 & 0xf;
+        if ( a )
+        {
+            *(PUCHAR)0x90 = a << 4;
+        }
+
+        a = *(PUCHAR)0xc4 >> 4;
+        ya = a * 0x11;
+        *(PUCHAR)0x84 = a;
+
+        *(PUCHAR)0xc2 = *(PUCHAR)0xc3 & 0xf0;
+        *(PUCHAR)0xc2 |= *(PUCHAR)0xc4 & 0xf;
+
+        *(PUCHAR)0xc1 = 0x81;
+
+        sub_1014 ();
+    }
+
+    //
+    // Restart main loop
+    //
+
+    sp = 0x1ff;
+    a = *(PUCHAR)0xfd;          // T0OUT
+
+    goto MainLoop;
+}
 
 --------------------------------------------------------------------------------------
 
-0da8: e8 ff     mov   a,#$ff
-0daa: 8d 5c     mov   y,#$5c
-0dac: 3f 55 06  call  DSP_Write
-0daf: 8f 00 f1  mov   $f1,#$00
-0db2: 8f 40 fa  mov   $fa,#$40
-0db5: 8f 01 f1  mov   $f1,#$01
-0db8: e4 fd     mov   a,$fd
-0dba: e4 fd     mov   a,$fd
-0dbc: f0 fc     beq   $0dba
-0dbe: 8f 00 f1  mov   $f1,#$00
-0dc1: 8f 24 fa  mov   $fa,#$24
-0dc4: 8f 01 f1  mov   $f1,#$01
-0dc7: 3f db 12  call  $12db
-0dca: 78 03 c1  cmp   $c1,#$03
-0dcd: d0 05     bne   $0dd4
-0dcf: 3f de 13  call  $13de
-0dd2: e8 00     mov   a,#$00
-0dd4: fa c2 ec  mov   ($ec),($c2)
-0dd7: fd        mov   y,a
-0dd8: da b9     movw  $b9,ya
-0dda: c4 bb     mov   $bb,a
-0ddc: da c9     movw  $c9,ya
-0dde: da cb     movw  $cb,ya
-0de0: da cd     movw  $cd,ya
-0de2: c4 c5     mov   $c5,a
-0de4: c4 c6     mov   $c6,a
-0de6: c4 c7     mov   $c7,a
-0de8: 32 be     clr1  $be
-0dea: da bc     movw  $bc,ya
-0dec: c4 b4     mov   $b4,a
-0dee: c4 b7     mov   $b7,a
-0df0: c4 9c     mov   $9c,a
-0df2: c4 9e     mov   $9e,a
-0df4: e2 9c     set7  $9c
-0df6: e2 9e     set7  $9e
-0df8: c4 a3     mov   $a3,a
-0dfa: c4 a5     mov   $a5,a
-0dfc: c4 a8     mov   $a8,a
-0dfe: c4 aa     mov   $aa,a
-0e00: e2 a8     set7  $a8
-0e02: e2 aa     set7  $aa
-0e04: c4 af     mov   $af,a
-0e06: c4 b1     mov   $b1,a
-0e08: da d6     movw  $d6,ya
-0e0a: da cf     movw  $cf,ya
-0e0c: c4 d1     mov   $d1,a
-0e0e: da d8     movw  $d8,ya
-0e10: 8f 01 7d  mov   $7d,#$01
-0e13: 8f ff 7e  mov   $7e,#$ff
-0e16: 8f ff b8  mov   $b8,#$ff
-0e19: e3 be 02  bbs7  $be,$0e1d
-0e1c: c4 c0     mov   $c0,a
-0e1e: e8 00     mov   a,#$00
-0e20: 8d 4d     mov   y,#$4d
-0e22: 3f 55 06  call  DSP_Write
-0e25: 8d 0d     mov   y,#$0d
-0e27: 3f 55 06  call  DSP_Write
-0e2a: 8d 2c     mov   y,#$2c
-0e2c: 3f 55 06  call  DSP_Write
-0e2f: 8d 3c     mov   y,#$3c
-0e31: 3f 55 06  call  DSP_Write
-0e34: 3f c8 13  call  $13c8
-0e37: 73 04 03  bbc3  $04,$0e3c
-0e3a: 5f b2 0e  jmp   $0eb2
-0e3d: 69 ec eb  cmp   ($eb),($ec)
-0e40: d0 05     bne   $0e47
-0e42: 3f 87 15  call  $1587
-0e45: 2f 43     bra   $0e8a
-0e47: cd 10     mov   x,#$10
-0e49: f5 01 1c  mov   a,$1c01+x
-0e4c: d4 0b     mov   $0b+x,a
-0e4e: 1d        dec   x
-0e4f: d0 f8     bne   $0e49
-0e51: e5 00 1c  mov   a,$1c00
-0e54: c4 06     mov   $06,a
-0e56: e5 01 1c  mov   a,$1c01
-0e59: c4 07     mov   $07,a
-0e5b: e8 14     mov   a,#$14
-0e5d: 8d 1c     mov   y,#$1c
-0e5f: 9a 06     subw  ya,$06
-0e61: da 06     movw  $06,ya
-0e63: cd 0e     mov   x,#$0e
-0e65: 8f 80 bf  mov   $bf,#$80
-0e68: e5 12 1c  mov   a,$1c12
-0e6b: ec 13 1c  mov   y,$1c13
-0e6e: da 34     movw  $34,ya
-0e70: f4 0c     mov   a,$0c+x
-0e72: fb 0d     mov   y,$0d+x
-0e74: 5a 34     cmpw  ya,$34
-0e76: f0 0c     beq   $0e84
-0e78: 09 bf b9  or    ($b9),($bf)
-0e7b: 7a 06     addw  ya,$06
-0e7d: d4 0c     mov   $0c+x,a
-0e7f: db 0d     mov   $0d+x,y
-0e81: 3f ba 0e  call  $0eba
-0e84: 1d        dec   x
-0e85: 1d        dec   x
-0e86: 4b bf     lsr   $bf
-0e88: d0 e6     bne   $0e70
-0e8a: e4 c3     mov   a,$c3
-0e8c: 28 0f     and   a,#$0f
-0e8e: f0 03     beq   $0e93
-0e90: 9f        xcn   a
-0e91: c4 90     mov   $90,a
-0e93: e4 c4     mov   a,$c4
-0e95: 28 f0     and   a,#$f0
-0e97: 9f        xcn   a
-0e98: 8d 11     mov   y,#$11
-0e9a: cf        mul   ya
-0e9b: c4 84     mov   $84,a
-0e9d: e4 c3     mov   a,$c3
-0e9f: 28 f0     and   a,#$f0
-0ea1: c4 c2     mov   $c2,a
-0ea3: e4 c4     mov   a,$c4
-0ea5: 28 0f     and   a,#$0f
-0ea7: 04 c2     or    a,$c2
-0ea9: c4 c2     mov   $c2,a
-0eab: e8 81     mov   a,#$81
-0ead: c4 c1     mov   $c1,a
-0eaf: 3f 14 10  call  $1014
-0eb2: cd ff     mov   x,#$ff
-0eb4: bd        mov   sp,x
-0eb5: e4 fd     mov   a,$fd
-0eb7: 5f 8c 02  jmp   $028c
 0eba: 7d        mov   a,x
 0ebb: 1c        asl   a
 0ebc: d4 5c     mov   $5c+x,a
@@ -2502,22 +2573,18 @@ DSP_Write (y, a)            // 0x0655
 
 --------------------------------------------------------------------------------------
 
-13c7: 6f        ret
+Dummy ()            // 0x13c7
+{
+}
 
 --------------------------------------------------------------------------------------
 
-13c8: e8 00     mov   a,#$00
-13ca: 8d d2     mov   y,#$d2
-13cc: da 2c     movw  $2c,ya
-13ce: e8 00     mov   a,#$00
-13d0: fd        mov   y,a
-13d1: d7 2c     mov   ($2c)+y,a
-13d3: fc        inc   y
-13d4: d0 fb     bne   $13d1
-13d6: ab 2d     inc   $2d
-13d8: 78 fa 2d  cmp   $2d,#$fa
-13db: d0 f4     bne   $13d1
-13dd: 6f        ret
+ClearUpperMem ()         // 0x13c8
+{
+    // Clear 0xd200 ... 0xfa00
+
+    memset ( 0xd200, 0, 0x2800);
+}
 
 --------------------------------------------------------------------------------------
 
@@ -2984,59 +3051,57 @@ DSP_Write (y, a)            // 0x0655
 
 // Jump table 2
 
-182b: a2
-182c: 06
-182d: ae        pop   a
-182e: 06        or    a,(x)
-182f: 30 07     bmi   $1838
-1831: 3c        rol   a
-1832: 07 78     or    a,($78+x)
-1834: 07 b7     or    a,($b7+x)
-1836: 07 c9     or    a,($c9+x)
-1838: 07 cd     or    a,($cd+x)
-183a: 07 df     or    a,($df+x)
-183c: 07 e3     or    a,($e3+x)
-183e: 07 34     or    a,($34+x)
-1840: 08 be     or    a,#$be
-1842: 08 77     or    a,#$77
-1844: 08 a6     or    a,#$a6
-1846: 08 cc     or    a,#$cc
-1848: 08 e5     or    a,#$e5
-184a: 08 4e     or    a,#$4e
-184c: 08 67     or    a,#$67
-184e: 08 4a     or    a,#$4a
-1850: 08 40     or    a,#$40
-1852: 08 46     or    a,#$46
-1854: 08 87     or    a,#$87
-1856: 07 83     or    a,($83+x)
-1858: 07 42     or    a,($42+x)
-185a: 0a f5 08  or1   c,$011e,5
-185d: 1f 09 4f  jmp   ($4f09+x)
-1860: 09 62 09  or    ($09),($62)
-1863: 74 09     cmp   a,$09+x
-1865: 84 09     adc   a,$09
-1867: cd 09     mov   x,#$09
-1869: fd        mov   y,a
-186a: 09 46 0a  or    ($0a),($46)
-186d: 5a 06     cmpw  ya,$06
-186f: 67 06     cmp   a,($06+x)
-1871: ea 06 f7  not1  $1ee0,6
-1874: 06        or    a,(x)
-1875: 8b 07     dec   $07
-1877: 9f        xcn   a
-1878: 06        or    a,(x)
-1879: a8 09     sbc   a,#$09
-187b: 96 09 27  adc   a,$2709+y
-187e: 0a 46 0a  or1   c,$0148,6
-1881: 46        eor   a,(x)
-1882: 0a 46 0a  or1   c,$0148,6
-1885: 46        eor   a,(x)
-1886: 0a
+182b:   a2 06
+        ae 06
+        30 07
+        3c 07
+        78 07
+        b7 07
+        c9 07
+        cd 07
+        df 07
+        e3 07
+        34 08
+        be 08
+        77 08
+        a6 08
+        cc 08
+        e5 08
+        4e 08
+        67 08
+        4a 08
+        40 08
+        46 08
+        87 07
+        83 07
+        42 0a
+        f5 08
+        1f 09
+        4f 09
+        62 09
+        74 09
+        84 09
+        cd 09
+        fd 09
+        46 0a
+        5a 06
+        67 06
+        ea 06
+        f7 06
+        8b 07
+        9f 06
+        a8 09
+        96 09
+        27 0a
+        46 0a
+        46 0a
+        46 0a
+        46 0a
 
 // Some data
 
-1887: 01 02  
-1889: 01       
+1887: 01 02
+1889: 01
 188a: 02 02     set0  $02
 188c: 03 00 03  bbs0  $00,$1891
 188f: 00        nop
@@ -3075,54 +3140,54 @@ DSP_Write (y, a)            // 0x0655
 
 // Jump table 3
 
-18b5: 14 10     or    a,$10+x
-18b7: 14 10     or    a,$10+x
-18b9: 14 10     or    a,$10+x
-18bb: 8f 10 8f  mov   $8f,#$10
-18be: 10 8f     bpl   $184f
-18c0: 10 0c     bpl   $18ce
-18c2: 11        tcall 1
-18c3: 0c 11 0c  asl   $0c11
-18c6: 11        tcall 1
-18c7: 8f 11 8f  mov   $8f,#$11
-18ca: 11        tcall 1
-18cb: 8f 11 c7  mov   $c7,#$11
-18ce: 13 c7 13  bbc0  $c7,$18e3
-18d1: c7 13     mov   ($13+x),a
-18d3: c7 13     mov   ($13+x),a
-18d5: 21        tcall 2
-18d6: 12 21     clr0  $21
-18d8: 12 21     clr0  $21
-18da: 12 14     clr0  $14
-18dc: 12 14     clr0  $14
-18de: 12 6b     clr0  $6b
-18e0: 12 7f     clr0  $7f
-18e2: 12 7f     clr0  $7f
-18e4: 12 96     clr0  $96
-18e6: 13 96 13  bbc0  $96,$18fb
-18e9: 96 13 72  adc   a,$7213+y
-18ec: 12 76     clr0  $76
-18ee: 12 c7     clr0  $c7
-18f0: 13 c7 13  bbc0  $c7,$1905
-18f3: b0 13     bcs   $1908
+18b5:   14 10
+        14 10
+        14 10
+        8f 10
+        8f 10
+        8f 10
+        0c 11
+        0c 11
+        0c 11
+        8f 11
+        8f 11
+        8f 11
+        c7 13
+        c7 13
+        c7 13
+        c7 13
+        21 12
+        21 12
+        21 12
+        14 12
+        14 12
+        6b 12
+        7f 12
+        7f 12
+        96 13
+        96 13
+        96 13
+        72 12
+        76 12
+        c7 13
+        c7 13
+        b0 13
 
 // Jump table 4
 
-18f5: 79        cmp   (x),(y)
-18f6: 08 fa     or    a,#$fa
-18f8: 08 83     or    a,#$83
-18fa: 09 14 0a  or    ($0a),($14)
-18fd: ad 0a     cmp   y,#$0a
-18ff: 50 0b     bvc   $190c
-1901: fc        inc   y
-1902: 0b b2     asl   $b2
-1904: 0c 74 0d  asl   $0d74
-1907: 41        tcall 4
-1908: 0e 1a 0f  tset1 $0f1a
-190b: 00        nop
-190c: 10 f3     bpl   $1901
-190e: 10
-
+18f5:   79 08
+        fa 08
+        83 09
+        14 0a 
+        ad 0a    
+        50 0b   
+        fc 0b
+        b2 0c
+        74 0d 
+        41 0e
+        1a 0f 
+        00 10
+        f3 10
 
 190f: 7f     bpl   $198f
 1910: 00        nop
