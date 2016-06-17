@@ -2,207 +2,207 @@
 
 // SPC is working closely with DSP for audio playback
 
-start () 		// 0x200
+start ()        // 0x200
 {
-	P = 0; 				// ZP = 0
-	I = 0;
-	SP = 0x1FF;
+    P = 0;              // ZP = 0
+    I = 0;
+    SP = 0x1FF;
 
-	//
-	// Clear low RAM (except HW regs)
-	//
+    //
+    // Clear low RAM (except HW regs)
+    //
 
-	memset (0, 0, 0xF0);
+    memset (0, 0, 0xF0);
 
-	*(PUSHORT)0xeb = 0xFFFF;
+    *(PUSHORT)0xeb = 0xFFFF;
 
-	//
-	// Reset DSP
-	//
+    //
+    // Reset DSP
+    //
 
-	DSP_Write (0xc, 0);
-	DSP_Write (0x1c, 0);
-	DSP_Write (0x2c, 0);
-	DSP_Write (0x3c, 0);
-	DSP_Write (0x2d, 0);
-	DSP_Write (0x3d, 0);
-	DSP_Write (0x4d, 0);
-	DSP_Write (0x5d, 0x1b);
+    DSP_Write (0xc, 0);
+    DSP_Write (0x1c, 0);
+    DSP_Write (0x2c, 0);
+    DSP_Write (0x3c, 0);
+    DSP_Write (0x2d, 0);
+    DSP_Write (0x3d, 0);
+    DSP_Write (0x4d, 0);
+    DSP_Write (0x5d, 0x1b);
 
-	//
-	// Set 0x7, 0x17, 0x27, 0x37, 0x47, 0x57, 0x67, 0x77  DSP Regs to 0xa0
-	//
+    //
+    // Set 0x7, 0x17, 0x27, 0x37, 0x47, 0x57, 0x67, 0x77  DSP Regs to 0xa0
+    //
 
-	y = 7;
-	while(1)
-	{
-		*(PUCHAR)0xf2 = y;
-		*(PUCHAR)0xf3 = 0xa0;
+    y = 7;
+    while(1)
+    {
+        *(PUCHAR)0xf2 = y;
+        *(PUCHAR)0xf3 = 0xa0;
 
-		y = y + 0x10;
-		if ( y >= 0x80 )
-			break;
-	}
+        y = y + 0x10;
+        if ( y >= 0x80 )
+            break;
+    }
 
-	*(PUCHAR)0xf1 = 0xf0; 			// CONTROL
-	*(PUCHAR)0xfa = 0x24; 		// T0TARGET
-	*(PUCHAR)0xfb = 0x80;		// T1TARGET
-	*(PUCHAR)0xf1 = 3; 			// CONTROL
+    *(PUCHAR)0xf1 = 0xf0;           // CONTROL
+    *(PUCHAR)0xfa = 0x24;       // T0TARGET
+    *(PUCHAR)0xfb = 0x80;       // T1TARGET
+    *(PUCHAR)0xf1 = 3;          // CONTROL
 
-	sub_13c8 ();
+    sub_13c8 ();
 
-	DSP_Write (0x6d, 0xd2);
-	DSP_Write (0x7d, 5);
+    DSP_Write (0x6d, 0xd2);
+    DSP_Write (0x7d, 5);
 
-	//
-	// Sleep a bit (Timer1)
-	//
+    //
+    // Sleep a bit (Timer1)
+    //
 
-	a = 0x10;
-	while (a--)
-	{
-		while ( *(PUCHAR)0xfe == 0 )  ; 		// Wait T1OUT
-	}
+    a = 0x10;
+    while (a--)
+    {
+        while ( *(PUCHAR)0xfe == 0 )  ;         // Wait T1OUT
+    }
 
-	DSP_Write (0xc, 0x7f);
-	DSP_Write (0x1c, 0x7f);
+    DSP_Write (0xc, 0x7f);
+    DSP_Write (0x1c, 0x7f);
 
-	*(PUCHAR)0xbd = 0xff;
-	*(PUCHAR)0xea = 7;
+    *(PUCHAR)0xbd = 0xff;
+    *(PUCHAR)0xea = 7;
 
-	*(PUCHAR)0x9c.7 = 1;
-	*(PUCHAR)0x9e.7 = 1;
-	*(PUCHAR)0xa8.7 = 1;
-	*(PUCHAR)0xaa.7 = 1;
+    *(PUCHAR)0x9c.7 = 1;
+    *(PUCHAR)0x9e.7 = 1;
+    *(PUCHAR)0xa8.7 = 1;
+    *(PUCHAR)0xaa.7 = 1;
 
-	//
-	// SPC Main Loop
-	//
+    //
+    // SPC Main Loop
+    //
 
-	while(1)
-	{
-		//
-		// 1
-		//
+    while(1)
+    {
+        //
+        // 1
+        //
 
-		while (1)
-		{
-			sub_0d68 ();
-			if (*(PUCHAR)0xfd != 0 ) 		// T0OUT
-				break;
-		}
+        while (1)
+        {
+            sub_0d68 ();
+            if (*(PUCHAR)0xfd != 0 )        // T0OUT
+                break;
+        }
 
-		//
-		// 2
-		//
+        //
+        // 2
+        //
 
-		y = 8;
-		while(1)
-		{
-			*(PUCHAR)0xf2 = *(PUCHAR)(0x19df + y);
-			x = *(PUCHAR)(0x19e7 + y);
-			*(PUCHAR)0xf3 = *(PUCHAR)x; 
+        y = 8;
+        while(1)
+        {
+            *(PUCHAR)0xf2 = *(PUCHAR)(0x19df + y);
+            x = *(PUCHAR)(0x19e7 + y);
+            *(PUCHAR)0xf3 = *(PUCHAR)x; 
 
-			y--;
-			if ( y == 0 )
-				break;
-		}
+            y--;
+            if ( y == 0 )
+                break;
+        }
 
-		//
-		// 3
-		//
+        //
+        // 3
+        //
 
-		*(PUCHAR)0xbd = 0;
-		*(PUCHAR)0xbc = 0;
-		if ( *(PUCHAR)0xbe.7 )
-		{
-			sub_1739 ();
-		}
-		else
-		{
-			*(PUSHORT)0xf6 = *(PUSHORT)0xb9;
-			*(PUCHAR)0xf5 = *(PUCHAR)0xd1;
-		}
+        *(PUCHAR)0xbd = 0;
+        *(PUCHAR)0xbc = 0;
+        if ( *(PUCHAR)0xbe.7 )
+        {
+            sub_1739 ();
+        }
+        else
+        {
+            *(PUSHORT)0xf6 = *(PUSHORT)0xb9;
+            *(PUCHAR)0xf5 = *(PUCHAR)0xd1;
+        }
 
-		//
-		// 4
-		//
+        //
+        // 4
+        //
 
-		if ( *(PUSHORT)0xd8 == 0 )
-		{
-			*(PUCHAR)0xea--;
-			if ( *(PUCHAR)0xea == 0 )
-			{
-				*(PUCHAR)0xea = 7;
-				sub_1790 ();
-			}
-		}
+        if ( *(PUSHORT)0xd8 == 0 )
+        {
+            *(PUCHAR)0xea--;
+            if ( *(PUCHAR)0xea == 0 )
+            {
+                *(PUCHAR)0xea = 7;
+                sub_1790 ();
+            }
+        }
 
-		//
-		// 5
-		//
+        //
+        // 5
+        //
 
-		Sub_5 ();
+        Sub_5 ();
 
-		//
-		// Entropy?  8 iterations
-		//
+        //
+        // Entropy?  8 iterations
+        //
 
-		x = 0;
-		*(PUCHAR)0xbf = 1; 			// Mask
-		a = *(PUCHAR)0xba;
-		a |= *(PUCHAR)0xbb;
-		a ^= 0xff;
-		a &= *(PUCHAR)0xb9;
-		*(PUCHAR)0x02 = a;
+        x = 0;
+        *(PUCHAR)0xbf = 1;          // Mask
+        a = *(PUCHAR)0xba;
+        a |= *(PUCHAR)0xbb;
+        a ^= 0xff;
+        a &= *(PUCHAR)0xb9;
+        *(PUCHAR)0x02 = a;
 
-		while (1)
-		{
-			Carry = *(PUCHAR)0x02 & 1; 
-			*(PUCHAR)0x02 >>= 1;
-			if ( Carry )
-			{
-				*(PUCHAR)0x05 = x;
-				sub_0b43 ();
-			}
+        while (1)
+        {
+            Carry = *(PUCHAR)0x02 & 1; 
+            *(PUCHAR)0x02 >>= 1;
+            if ( Carry )
+            {
+                *(PUCHAR)0x05 = x;
+                sub_0b43 ();
+            }
 
-			x += 2;
-			*(PUCHAR)0xbf <<= 1;
-			if ( *(PUCHAR)0xbf == 0 )
-				break;
-		}
+            x += 2;
+            *(PUCHAR)0xbf <<= 1;
+            if ( *(PUCHAR)0xbf == 0 )
+                break;
+        }
 
-		//
-		// Entropy 2 ?  4 iterations
-		//
+        //
+        // Entropy 2 ?  4 iterations
+        //
 
-		x = 0x1e;
-		*(PUCHAR)0xbf = 0x80; 			// Mask
-		a = *(PUCHAR)0xba;
-		a |= *(PUCHAR)0xbb;
-		*(PUCHAR)0x02 = a;
+        x = 0x1e;
+        *(PUCHAR)0xbf = 0x80;           // Mask
+        a = *(PUCHAR)0xba;
+        a |= *(PUCHAR)0xbb;
+        *(PUCHAR)0x02 = a;
 
-		while (1)
-		{
-			Carry = *(PUCHAR)0x02 >> 7;
-			*(PUCHAR)0x02 <<= 1;
-			if ( Carry )
-			{
-				*(PUCHAR)0x05 = x;
-				sub_0b43 ();
-			}
+        while (1)
+        {
+            Carry = *(PUCHAR)0x02 >> 7;
+            *(PUCHAR)0x02 <<= 1;
+            if ( Carry )
+            {
+                *(PUCHAR)0x05 = x;
+                sub_0b43 ();
+            }
 
-			x -= 2;
-			*(PUCHAR)0xbf >>= 1;
-			if ( *(PUCHAR)0xbf & 8 ) 		// Break on bit3 set
-				break;
-		}
-	}
+            x -= 2;
+            *(PUCHAR)0xbf >>= 1;
+            if ( *(PUCHAR)0xbf & 8 )        // Break on bit3 set
+                break;
+        }
+    }
 }
 
 --------------------------------------------------------------------------------------
 
-Sub_5 () 			// 0x304
+Sub_5 ()            // 0x304
 {
 
 }
@@ -347,7 +347,6 @@ Sub_5 () 			// 0x304
 040c: 5f bf 04  jmp   $04bf
 040f: 6f        ret
 
---------------------------------------------------------------------------------------
 
 0410: c8 10     cmp   x,#$10
 0412: b0 08     bcs   $041c
@@ -428,7 +427,6 @@ Sub_5 () 			// 0x304
 04b9: 09 bf bc  or    ($bc),($bf)
 04bc: 3f 12 09  call  $0912
 
-------------------------------------------------------------------------------
 
 04bf: f5 20 01  mov   a,$0120+x
 04c2: f0 62     beq   $0526
@@ -478,6 +476,9 @@ Sub_5 () 			// 0x304
 0521: e8 00     mov   a,#$00
 0523: d5 20 01  mov   $0120+x,a
 0526: 6f        ret
+
+----------------------------------------------------------------------------
+
 0527: cd 0c     mov   x,#$0c
 0529: 8d 00     mov   y,#$00
 052b: 9e        div   ya,x
@@ -650,10 +651,10 @@ Sub_5 () 			// 0x304
 
 --------------------------------------------------------------------------------------
 
-DSP_Write (y, a) 			// 0x0655
+DSP_Write (y, a)            // 0x0655
 {
-	*(PUCHAR)0xf2 = y;
-	*(PUCHAR)0xf2 = a;
+    *(PUCHAR)0xf2 = y;
+    *(PUCHAR)0xf2 = a;
 }
 
 --------------------------------------------------------------------------------------
@@ -1145,6 +1146,9 @@ DSP_Write (y, a) 			// 0x0655
 09a3: d4 0c     mov   $0c+x,a
 09a5: db 0d     mov   $0d+x,y
 09a7: 6f        ret
+
+------------------------------------------------------------------------------------
+
 09a8: c4 36     mov   $36,a
 09aa: 3f 9c 05  call  $059c
 09ad: c4 34     mov   $34,a
@@ -2394,6 +2398,9 @@ DSP_Write (y, a) 			// 0x0655
 1300: f0 fc     beq   $12fe
 1302: f8 f4     mov   x,$f4
 1304: 6f        ret
+
+--------------------------------------------------------------------------
+
 1305: e4 f5     mov   a,$f5
 1307: d7 2c     mov   ($2c)+y,a
 1309: 3a 2c     incw  $2c
@@ -2964,14 +2971,21 @@ DSP_Write (y, a) 			// 0x0655
 // Data
 // 
 
-181b: 4d        push  x
-181c: 13 3b 13  bbc0  $3b,$1831
-181f: 23 13 05  bbs1  $13,$1826
-1822: 13 4d 13  bbc0  $4d,$1837
-1825: 4d        push  x
-1826: 13 4d 13  bbc0  $4d,$183b
-1829: 5a 13     cmpw  ya,$13
-182b: a2 06     set5  $06
+// Jump table 1
+
+181b:   4d 13               
+        3b 13
+        23 13
+        05 13
+        4d 13 
+        4d 13
+        4d 13
+        5a 13
+
+// Jump table 2
+
+182b: a2
+182c: 06
 182d: ae        pop   a
 182e: 06        or    a,(x)
 182f: 30 07     bmi   $1838
@@ -3017,8 +3031,12 @@ DSP_Write (y, a) 			// 0x0655
 1881: 46        eor   a,(x)
 1882: 0a 46 0a  or1   c,$0148,6
 1885: 46        eor   a,(x)
-1886: 0a 01 02  or1   c,$0040,1
-1889: 01        tcall 0
+1886: 0a
+
+// Some data
+
+1887: 01 02  
+1889: 01       
 188a: 02 02     set0  $02
 188c: 03 00 03  bbs0  $00,$1891
 188f: 00        nop
@@ -3054,6 +3072,9 @@ DSP_Write (y, a) 			// 0x0655
 18b2: 00        nop
 18b3: 00        nop
 18b4: 00        nop
+
+// Jump table 3
+
 18b5: 14 10     or    a,$10+x
 18b7: 14 10     or    a,$10+x
 18b9: 14 10     or    a,$10+x
@@ -3084,6 +3105,9 @@ DSP_Write (y, a) 			// 0x0655
 18ee: 12 c7     clr0  $c7
 18f0: 13 c7 13  bbc0  $c7,$1905
 18f3: b0 13     bcs   $1908
+
+// Jump table 4
+
 18f5: 79        cmp   (x),(y)
 18f6: 08 fa     or    a,#$fa
 18f8: 08 83     or    a,#$83
@@ -3097,7 +3121,10 @@ DSP_Write (y, a) 			// 0x0655
 1908: 0e 1a 0f  tset1 $0f1a
 190b: 00        nop
 190c: 10 f3     bpl   $1901
-190e: 10 7f     bpl   $198f
+190e: 10
+
+
+190f: 7f     bpl   $198f
 1910: 00        nop
 1911: 00        nop
 1912: 00        nop
@@ -3210,11 +3237,15 @@ DSP_Write (y, a) 			// 0x0655
 19dc: 12 0e     clr0  $0e
 19de: 4b
 
+// See start
+
 19df: f2
 19e0: 4c 5c 2d
 19e3: 3d      
 19e4: 4d      
 19e5: 2c 3c
+
+// See start
 
 19e7: 6c
 19e8: bc
