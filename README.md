@@ -1,8 +1,6 @@
 Attempt to reverse engineer SNES FFV game.
 
-Задача проекта - поверхностно пробежаться по всей массе кода игры, вычленить оттуда ключевые места и задокументировать. Особый интерес представляет боевая система и поведение монстров в бою.
-
-Ну вот например где написано что Elf Cape дает офигенный уворот от физических атак? Большинство проходили игру на Optimum шмоте и про Elf Cape даже не знают. А сколько ещё загадок хранят в себе остальные итемы и навыки?
+The project's objective - overview through the entire game code, locate key features and document it. Of particular interest is the combat system and the behavior of monsters in battle.
 
 http://www.gamefaqs.com/snes/588331-final-fantasy-v/faqs/30040
 
@@ -31,6 +29,7 @@ http://www.gamefaqs.com/snes/588331-final-fantasy-v/faqs/30040
     * 01 nn 08 0F: play music #nn
     * 02 nn 0F 88: play SFX #nn
     * 80 40 08 0F: fade-out ?
+    * F0 ?? ?? ??: SPC Engine soft reset
     * F2 22 08 0F: ??
 
 **ROM information**
@@ -64,7 +63,7 @@ No SMC 512-byte header.
   * IDA for snes
   * no$sns debugger (http://problemkaputt.de/sns.htm)
 
-Регистры SNES : http://en.wikibooks.org/wiki/Super_NES_Programming/SNES_Hardware_Registers
+SNES Regs : http://en.wikibooks.org/wiki/Super_NES_Programming/SNES_Hardware_Registers
 
 http://nocash.emubase.de/fullsnes.htm
 
@@ -83,4 +82,3 @@ To set those flags manually - press Alt+G to change "segment registers". CPU mod
 so you can change it manually.
 
 To check current segregs values press Ctrl+Space.
-

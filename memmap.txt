@@ -57,6 +57,8 @@ WRAM:
 
 7E:16A9     BYTE        Clear party steps in map after random battle
 
+7E:1D00                 SPC Data
+
 7E:1F00     DWORD       NMI Thunk
 7E:1F04     DWORD       IRQ Thunk
 
@@ -81,6 +83,14 @@ C1:0000                 HiRom Bank 1: Battle FX
 C2:0000                 HiRom Bank 2: Battle Main
 C3:0000                 HiRom Bank 3: Decompress engine + Bgfx 
 C4:0000                 HiRom Bank 4: SPC Music and SFX
+
+    SPC Program Data:
+    C4:064D => 0x200                  0x17F0 bytes
+    C4:1F95 => 0x2C00                 0x1C00
+    C4:1E3F => 0x4800                 0x10E
+    C4:1F4F => 0x1B00                 0x20
+    C4:1F71 => 0x1A80                 0x10
+    C4:1F83 => 0x1A00                 0x10
 
 D0:6800                 Monster Party Map (big table)
 
