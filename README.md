@@ -84,3 +84,10 @@ To set those flags manually - press Alt+G to change "segment registers". CPU mod
 so you can change it manually.
 
 To check current segregs values press Ctrl+Space.
+
+**Asm hints**
+
+  * BCC reg, imm : if ( reg < imm)
+  * BCS reg, imm : if ( reg >= imm )
+  * BMI reg : if ( reg & 0x80 )  /  if ( reg >= 0x80 )
+  * BPL reg : if ( reg < 0x80 )

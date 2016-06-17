@@ -3,8 +3,8 @@
 // SPC is working closely with DSP for audio playback
 
 // Low memory map:
-// 0x2c..0x2d       WORD        Temp pointer for ClearUpperMem
-// 0xbf             BYTE        Mask (Main loop)
+// 0x2c..0x2d       WORD        Temp pointer
+// 0xbf             BYTE        Mask (Main loop, also in SPC_Command)
 // 0xc1             BYTE        Saved CPUI0    see SPC_Command
 // 0xc2             BYTE        Saved CPUI1
 // 0xc3             BYTE        Saved CPUI2
@@ -92,7 +92,7 @@ MainLoop:           // 0x028c
     while(1)
     {
         //
-        // 1
+        // Check command in mailbox registers
         //
 
         while (1)
@@ -103,15 +103,15 @@ MainLoop:           // 0x028c
         }
 
         //
-        // 2
+        // Update periodic DSP Regs
         //
 
         y = 8;
         while(1)
         {
-            *(PUCHAR)0xf2 = *(PUCHAR)(0x19df + y);
+            *(PUCHAR)0xf2 = *(PUCHAR)(0x19df + y);      // DSPADDR
             x = *(PUCHAR)(0x19e7 + y);
-            *(PUCHAR)0xf3 = *(PUCHAR)x; 
+            *(PUCHAR)0xf3 = *(PUCHAR)x;             // DSPDATA
 
             y--;
             if ( y == 0 )
@@ -130,8 +130,8 @@ MainLoop:           // 0x028c
         }
         else
         {
-            *(PUSHORT)0xf6 = *(PUSHORT)0xb9;
-            *(PUCHAR)0xf5 = *(PUCHAR)0xd1;
+            *(PUSHORT)0xf6 = *(PUSHORT)0xb9;        // CPUO3 / CPUO2
+            *(PUCHAR)0xf5 = *(PUCHAR)0xd1;      // CPUO1
         }
 
         //
@@ -546,7 +546,7 @@ Sub_5 ()            // 0x304
 
 --------------------------------------------------------------------------------------
 
-0588: a8 d2     sbc   a,#$d2
+0588: a8 d2     sbc   a,#$d2                // -46
 058a: 1c        asl   a
 058b: fd        mov   y,a
 058c: f6 2c 18  mov   a,$182c+y
@@ -663,8 +663,8 @@ Sub_5 ()            // 0x304
 
 DSP_Write (y, a)            // 0x0655
 {
-    *(PUCHAR)0xf2 = y;
-    *(PUCHAR)0xf2 = a;
+    *(PUCHAR)0xf2 = y;          // DSPADDR
+    *(PUCHAR)0xf3 = a;          // DSPDATA
 }
 
 --------------------------------------------------------------------------------------
@@ -809,6 +809,9 @@ DSP_Write (y, a)            // 0x0655
 0735: d5 40 fa  mov   $fa40+x,a
 0738: d5 81 fa  mov   $fa81+x,a
 073b: 6f        ret
+
+--------------------------------------------------------------------------------------
+
 073c: c4 34     mov   $34,a
 073e: d5 81 fa  mov   $fa81+x,a
 0741: 3f 9c 05  call  $059c
@@ -1001,6 +1004,9 @@ DSP_Write (y, a)            // 0x0655
 087e: 2f 05     bra   $0885
 0880: 09 bf cc  or    ($cc),($bf)
 0883: 02 cc     set0  $cc
+
+--------------------------------------------------------------------------------------
+
 0885: fa cc 34  mov   ($34),($cc)
 0888: 12 34     clr0  $34
 088a: e4 c8     mov   a,$c8
@@ -1038,6 +1044,9 @@ DSP_Write (y, a)            // 0x0655
 08c6: 2f bd     bra   $0885
 08c8: c4 d3     mov   $d3,a
 08ca: 2f b9     bra   $0885
+
+--------------------------------------------------------------------------------------
+
 08cc: c8 10     cmp   x,#$10
 08ce: b0 05     bcs   $08d5
 08d0: 09 bf cd  or    ($cd),($bf)
@@ -1255,6 +1264,9 @@ DSP_Write (y, a)            // 0x0655
 
 0a46: ae        pop   a
 0a47: ae        pop   a
+
+--------------------------------------------------------------------------------------
+
 0a48: e4 bf     mov   a,$bf
 0a4a: c8 10     cmp   x,#$10
 0a4c: b0 05     bcs   $0a53
@@ -1691,39 +1703,40 @@ SPC_Command ()         // 0x0d68
     if ( a >= 0x80 )
     {
         if ( a == 0xFE )
-            sub_12db ();        // Jump really
+            WriteMem (x=0xFE);        // Jump really
         else
         {
             // 0x80 ... 0xFF, except 0xFE
 
             *(PUCHAR)0xf4 = 0;          // CPUO0
 
-            sub_0ffe ();        // Jump really
+            Command_Hi ();        // Jump really
         }
     }
     else
     {
         if ( a == 1 || a == 3 )
         {
-            sub_0da8 ();            // Jump really
+            sub_0da8 (x=a);            // Jump really
         }
         else
         {
             *(PUCHAR)0xf4 = 0;          // CPUO0
 
             if ( a == 2 )
-                sub_0ee2 ();    // Jump really
+                Command_2 ();    // Jump really
             else if ( a >= 0x10 && a < 0x20 )
-                sub_0fa5 ();        // Jump really
+                Command_10_20 (x=a);        // Jump really
             else 
                 return;
         }
     }
 }
 
-// Spc command 1 and 3
+// Spc command 1 or 3
+// Input: x - Command number
 
-sub_0da8 ()         // 0x0da8
+sub_0da8 (x)         // 0x0da8
 {
     DSP_Write ( 0x5c, 0xff );
 
@@ -1738,11 +1751,11 @@ sub_0da8 ()         // 0x0da8
     *(PUCHAR)0xfa = 0x24;           // T0TARGET
     *(PUCHAR)0xf1 = 1;          // CONTROL
 
-    a = sub_12db ();
+    a = WriteMem (x);           // <----------------------------  Bug? a has random value.
 
     if ( *(PUCHAR)0xc1 == 3 )
     {
-        sub_13de ();
+        State_1 ();
         a = 0;
     }
 
@@ -1798,7 +1811,7 @@ sub_0da8 ()         // 0x0da8
     {
         if ( *(PUCHAR)0xeb == *(PUCHAR)0xec )
         {
-            sub_1587 ();
+            State_2 ();
         }
         else
         {
@@ -1835,7 +1848,7 @@ sub_0da8 ()         // 0x0da8
                     *(PUCHAR)(0xc + x) = a;
                     *(PUCHAR)(0xd + x) = y;
 
-                    sub_0eba ();
+                    ResetEba ();
                 }
 
                 x -= 2;
@@ -1868,12 +1881,15 @@ sub_0da8 ()         // 0x0da8
     //
 
     sp = 0x1ff;
-    a = *(PUCHAR)0xfd;          // T0OUT
+    a = *(PUCHAR)0xfd;          // T0OUT.  Wtf this operation? Some japanese code-style ninja
+                                // Possibly we need to set some flags to some specific value.. Or just read out T0.. 
 
     goto MainLoop;
 }
 
 --------------------------------------------------------------------------------------
+
+ResetEba:
 
 0eba: 7d        mov   a,x
 0ebb: 1c        asl   a
@@ -1894,6 +1910,11 @@ sub_0da8 ()         // 0x0da8
 0ee1: 6f        ret
 
 --------------------------------------------------------------------------------------
+
+Command_2 ()            // 0xee2
+{
+
+}
 
 0ee2: fa c2 2c  mov   ($2c),($c2)
 0ee5: 8f 00 2d  mov   $2d,#$00
@@ -1928,7 +1949,7 @@ sub_0da8 ()         // 0x0da8
 0f20: f7 2c     mov   a,($2c)+y
 0f22: d4 0c     mov   $0c+x,a
 0f24: 09 bf 03  or    ($03),($bf)
-0f27: 3f ba 0e  call  $0eba
+0f27: 3f ba 0e  call  ResetEba
 0f2a: bb 3c     inc   $3c+x
 0f2c: e8 60     mov   a,#$60
 0f2e: d5 01 fa  mov   $fa01+x,a
@@ -1991,6 +2012,11 @@ sub_0da8 ()         // 0x0da8
 
 --------------------------------------------------------------------------------------
 
+Command_10_20 (x)               // 0xfa5
+{
+
+}
+
 0fa5: 7d        mov   a,x
 0fa6: 28 0f     and   a,#$0f
 0fa8: 1c        asl   a
@@ -2021,7 +2047,7 @@ sub_0da8 ()         // 0x0da8
 0fd7: d4 0d     mov   $0d+x,a
 0fd9: f6 3e 19  mov   a,$193e+y
 0fdc: d4 0c     mov   $0c+x,a
-0fde: 3f ba 0e  call  $0eba
+0fde: 3f ba 0e  call  ResetEba
 0fe1: bb 3c     inc   $3c+x
 0fe3: 3f 48 0a  call  $0a48
 0fe6: e4 bf     mov   a,$bf
@@ -2036,6 +2062,8 @@ sub_0da8 ()         // 0x0da8
 
 --------------------------------------------------------------------------------------
 
+// Command_Hi
+
 0ffe: c8 f0     cmp   x,#$f0
 1000: b0 04     bcs   $1006
 1002: c8 90     cmp   x,#$90
@@ -2046,7 +2074,7 @@ sub_0da8 ()         // 0x0da8
 100a: fd        mov   y,a
 100b: f6 b6 18  mov   a,$18b6+y
 100e: 2d        push  a
-100f: f6 b5 18  mov   a,$18b5+y
+100f: f6 b5 18  mov   a,$18b5+y             // Jump table 3
 1012: 2d        push  a
 1013: 6f        ret
 
@@ -2446,31 +2474,43 @@ sub_0da8 ()         // 0x0da8
 
 --------------------------------------------------------------------------------------
 
-12db: e4 f5     mov   a,$f5
-12dd: c4 04     mov   $04,a
-12df: 28 07     and   a,#$07
-12e1: c4 f5     mov   $f5,a
-12e3: d0 04     bne   $12e9
-12e5: d8 f4     mov   $f4,x
-12e7: 2f 1b     bra   $1304
-12e9: 1c        asl   a
-12ea: 2d        push  a
-12eb: ba f6     movw  ya,$f6
-12ed: da 2c     movw  $2c,ya
-12ef: ee        pop   y
-12f0: f6 1c 18  mov   a,$181c+y
-12f3: 2d        push  a
-12f4: f6 1b 18  mov   a,$181b+y
-12f7: 2d        push  a
-12f8: 8d 00     mov   y,#$00
-12fa: f8 f4     mov   x,$f4
-12fc: d8 f4     mov   $f4,x
-12fe: 3e f4     cmp   x,$f4
-1300: f0 fc     beq   $12fe
-1302: f8 f4     mov   x,$f4
-1304: 6f        ret
+// Write Spc memory
+
+// Input: x - Command number
+// Return a = 0, or a = subcall Result.
+WriteMem (x)         // 0x12db
+{
+    a = *(PUCHAR)0xf5;      // CPUI1
+    *(PUCHAR)0x04 = a;
+    a &= 7;
+    *(PUCHAR)0xf5 = a;      // CPUO1
+
+    if ( a == 0 )
+    {
+        *(PUCHAR)0xf4 = x;          // CPUO0
+        return;
+    }
+
+    *(PUSHORT)0x2c = *(PUSHORT)0xf6;        // CPUI2 / CPUI3
+
+    y = 0;
+
+    //
+    // Wait response
+    //
+
+    x = *(PUCHAR)0xf4;
+    *(PUCHAR)0xf4 = x;
+    while ( x == *(PUCHAR)0xf4 ) ;  // wait
+
+    x = *(PUCHAR)0xf4;          // CPUI0
+
+    JumpTable1[a] ();
+}
 
 --------------------------------------------------------------------------
+
+Write_3:
 
 1305: e4 f5     mov   a,$f5
 1307: d7 2c     mov   ($2c)+y,a
@@ -2486,7 +2526,12 @@ sub_0da8 ()         // 0x0da8
 131b: f0 fc     beq   $1319
 131d: f8 f4     mov   x,$f4
 131f: d0 e4     bne   $1305
-1321: 2f b8     bra   $12db
+1321: 2f b8     bra   WriteMem
+
+----------------------------------------------------------------------
+
+Write_2:
+
 1323: e4 f6     mov   a,$f6
 1325: d7 2c     mov   ($2c)+y,a
 1327: 3a 2c     incw  $2c
@@ -2498,7 +2543,12 @@ sub_0da8 ()         // 0x0da8
 1333: f0 fc     beq   $1331
 1335: f8 f4     mov   x,$f4
 1337: d0 ea     bne   $1323
-1339: 2f a0     bra   $12db
+1339: 2f a0     bra   WriteMem
+
+--------------------------------------------------------------------
+
+Write_1:
+
 133b: e4 f7     mov   a,$f7
 133d: d7 2c     mov   ($2c)+y,a
 133f: 3a 2c     incw  $2c
@@ -2507,13 +2557,23 @@ sub_0da8 ()         // 0x0da8
 1345: f0 fc     beq   $1343
 1347: f8 f4     mov   x,$f4
 1349: d0 f0     bne   $133b
-134b: 2f 8e     bra   $12db
+134b: 2f 8e     bra   WriteMem
+
+-----------------------------------------------------------------------
+
+Write_0:
+
 134d: d8 f4     mov   $f4,x
 134f: 3e f4     cmp   x,$f4
 1351: f0 fc     beq   $134f
 1353: f8 f4     mov   x,$f4
 1355: d0 f6     bne   $134d
-1357: 5f db 12  jmp   $12db
+1357: 5f db 12  jmp   WriteMem
+
+-----------------------------------------------------------------------
+
+Write_Special:
+
 135a: ba f6     movw  ya,$f6
 135c: da 2e     movw  $2e,ya
 135e: d8 f4     mov   $f4,x
@@ -2543,7 +2603,10 @@ sub_0da8 ()         // 0x0da8
 138d: f0 fc     beq   $138b
 138f: f8 f4     mov   x,$f4
 1391: 2f c7     bra   $135a
-1393: 5f db 12  jmp   $12db
+1393: 5f db 12  jmp   WriteMem
+
+-----------------------------------------------------------------------
+
 1396: ea c1 20  not1  $0418,1
 1399: aa c1 20  mov1  c,$0418,1
 139c: ca be 20  mov1  $0417,6,c
@@ -2584,9 +2647,22 @@ ClearUpperMem ()         // 0x13c8
     // Clear 0xd200 ... 0xfa00
 
     memset ( 0xd200, 0, 0x2800);
+
+/*
+13d1: d7 2c     mov   ($2c)+y,a
+13d3: fc        inc   y
+13d4: d0 fb     bne   $13d1
+13d6: ab 2d     inc   $2d
+13d8: 78 fa 2d  cmp   $2d,#$fa
+13db: d0 f4     bne   $13d1
+13dd: 6f        ret
+*/
+
 }
 
 --------------------------------------------------------------------------------------
+
+State_1:
 
 13de: fa ec eb  mov   ($eb),($ec)
 13e1: e4 80     mov   a,$80
@@ -2748,6 +2824,8 @@ ClearUpperMem ()         // 0x13c8
 1586: 6f        ret
 
 --------------------------------------------------------------------------------------
+
+State_2:
 
 1587: 8f ff eb  mov   $eb,#$ff
 158a: e5 80 fd  mov   a,$fd80
@@ -3040,63 +3118,65 @@ ClearUpperMem ()         // 0x13c8
 
 // Jump table 1
 
-181b:   4d 13               
-        3b 13
-        23 13
-        05 13
-        4d 13 
-        4d 13
-        4d 13
-        5a 13
+JumpTable1[8] = {       // 0x181b
+    sub_13d4,                       // Never called
+    Write_1,
+    Write_2,
+    Write_3,
+    Write_0,
+    Write_0,
+    Write_0,
+    Write_Special,
+};
 
-// Jump table 2
+// Jump table 2   [46]
 
-182b:   a2 06
-        ae 06
-        30 07
-        3c 07
-        78 07
-        b7 07
-        c9 07
-        cd 07
-        df 07
-        e3 07
-        34 08
-        be 08
-        77 08
-        a6 08
-        cc 08
-        e5 08
-        4e 08
-        67 08
-        4a 08
-        40 08
-        46 08
-        87 07
-        83 07
-        42 0a
-        f5 08
-        1f 09
-        4f 09
-        62 09
-        74 09
-        84 09
-        cd 09
-        fd 09
-        46 0a
-        5a 06
-        67 06
-        ea 06
-        f7 06
-        8b 07
-        9f 06
-        a8 09
-        96 09
-        27 0a
-        46 0a
-        46 0a
-        46 0a
-        46 0a
+182b:   sub_06a2,
+        sub_06ae,
+        sub_0730,
+        sub_073c,
+        sub_0778,
+        sub_07b7,
+        sub_07c9,
+        sub_07cd,
+        sub_07df,
+        sub_07e3,
+        sub_0834,
+        sub_08be,
+        sub_0877,
+        sub_08a6,
+        sub_08cc,
+        sub_08e5,
+        sub_084e,
+        sub_0867,
+        sub_084a,
+        sub_0840,
+        sub_0846,
+        sub_0787,
+        sub_0783,
+        sub_0a42,
+        sub_08f5,
+        sub_091f,
+        sub_094f,
+        sub_0962,
+        sub_0974,
+        sub_0984,
+        sub_09cd,
+        sub_09fd,
+        sub_0a46,
+        sub_065a,
+        sub_0667,
+        sub_06ea,
+        sub_06f7,
+        sub_078b,
+        sub_069f,
+        sub_09a8,
+        sub_0996,
+        sub_0a27,
+        sub_0a46,
+        sub_0a46,
+        sub_0a46,
+        sub_0a46,
 
 // Some data
 
@@ -3138,56 +3218,56 @@ ClearUpperMem ()         // 0x13c8
 18b3: 00        nop
 18b4: 00        nop
 
-// Jump table 3
+// Jump table 3   [32]
 
-18b5:   14 10
-        14 10
-        14 10
-        8f 10
-        8f 10
-        8f 10
-        0c 11
-        0c 11
-        0c 11
-        8f 11
-        8f 11
-        8f 11
-        c7 13
-        c7 13
-        c7 13
-        c7 13
-        21 12
-        21 12
-        21 12
-        14 12
-        14 12
-        6b 12
-        7f 12
-        7f 12
-        96 13
-        96 13
-        96 13
-        72 12
-        76 12
-        c7 13
-        c7 13
-        b0 13
+18b5:   sub_1014,
+        sub_1014,
+        sub_1014,
+        sub_108f,
+        sub_108f,
+        sub_108f,
+        sub_110c,
+        sub_110c,
+        sub_110c,
+        sub_118f,
+        sub_118f,
+        sub_118f,
+        Dummy,
+        Dummy,
+        Dummy,
+        Dummy,
+        sub_1221,
+        sub_1221,
+        sub_1221,
+        sub_1214,
+        sub_1214,
+        sub_126b,
+        sub_127f,
+        sub_127f,
+        sub_1396,
+        sub_1396,
+        sub_1396,
+        sub_1272,
+        sub_1276,
+        Dummy,
+        Dummy,
+        sub_13b0,
 
 // Jump table 4
 
-18f5:   79 08
-        fa 08
-        83 09
-        14 0a 
-        ad 0a    
-        50 0b   
-        fc 0b
-        b2 0c
-        74 0d 
-        41 0e
-        1a 0f 
-        00 10
-        f3 10
+18f5:   sub_0879
+        sub_08fa
+        sub_0983
+        sub_0a14 
+        sub_0aad    
+        sub_0b50   
+        sub_0bfc
+        sub_0cb2
+        sub_0d74 
+        sub_0e41
+        sub_0f1a 
+        sub_1000
+        sub_10f3
 
 190f: 7f     bpl   $198f
 1910: 00        nop
@@ -3216,6 +3296,8 @@ ClearUpperMem ()         // 0x13c8
 1938: 10 0c     bpl   $1946
 193a: 08 06     or    a,#$06
 193c: 04 03     or    a,$03
+
+
 193e: 5e 19 69  cmp   y,$6919
 1941: 19        or    (x),(y)
 1942: 74 19     cmp   a,$19+x
@@ -3301,20 +3383,24 @@ ClearUpperMem ()         // 0x13c8
 19db: ee        pop   y
 19dc: 12 0e     clr0  $0e
 19de: 4b
+19df: f2
 
+// Periodic DPS register index
 // See start
 
-19df: f2
 19e0: 4c 5c 2d
 19e3: 3d      
 19e4: 4d      
 19e5: 2c 3c
+19e7: 6c
 
+// Periodic DPS register data
 // See start
 
-19e7: 6c
 19e8: bc
 19e9: bd
 19ea: c7 c6
 19ec: c5 b4 b4
-19ef: c8 ff
+19ef: c8
+
+19f0: ff
