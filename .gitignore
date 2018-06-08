@@ -1,2 +1,7 @@
 *.smc
 *.srm
+temp
+*.id0
+*.id1
+*.nam
+*.til
