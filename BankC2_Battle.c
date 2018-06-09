@@ -7,13 +7,15 @@ BattleStart ()          // C2:0000
                             // D = 0
 
     //
-    // Increase global battle counter
+    // Increase global battle counter (not greater 0xFFFF)
     //
 
     C = GlobalBattleCount + 1;
 
     if ( Carry )
+    {
         C = 0xFFFF;
+    }
 
     GlobalBattleCount = C;
 
