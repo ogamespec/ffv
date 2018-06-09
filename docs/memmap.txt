@@ -1,0 +1,103 @@
+// FFV Memory map.
+
+WRAM:
+
+7E:0000                 Battle Engine Data (Pointed by D-Register)
+     3A     BYTE        Entropy sum 1 (Byte-sum of first 1000 bytes of RAM)
+     3B     BYTE        Entropy sum 2 (Byte-sum of first 2000 bytes of RAM)
+     70     WORD        Indirect Jump address for switch-case
+     7A     WORD        Indirect Jump address for switch-case
+
+7E:0134     BYTE        Game menu type (Parameter for Game Menu Engine). Possible values:
+                            0 - Party
+                            1 - Loot menu (max 8 items)
+                            2 - 
+                            3 - Load State
+7E:0139     BYTE        Menu Result
+7E:013B     BYTE        Loot item 1   (see ItemTypes.txt)
+7E:013C     BYTE        Loot item 2
+7E:013D     BYTE        Loot item 3
+7E:013E     BYTE        Loot item 4
+7E:013F     BYTE        Loot item 5
+7E:0140     BYTE        Loot item 6
+7E:0141     BYTE        Loot item 7
+7E:0142     BYTE        Loot item 8
+
+7E:0200     0x220       Sprite DMA Buffer (see NMI_Handler)
+
+7E:04F0     WORD        Monster party index
+
+7E:0500                 Party State (80 x 4 bytes)  (see CharState.txt)
+
+7E:094A     DWORD       Frame Counter (incremented each Game VBlank)
+
+7E:0970     BYTE        Speed / battle mode settings
+                            7:4 - Message speed (0 - fastest)
+                            3   - 1: Battle wait mode, 0: Battle active mode
+                            2:1 - Battle speed (0 - fastest)
+
+7E:0990                 30 Bytes of some data
+
+7E:09B5     BYTE        Flee Counter
+
+7E:09C0     WORD        GlobalBattleCount
+
+7E:0A14                 64 Bytes of some data
+
+7E:0A54     0x80        128 Bytes of some data (copied from D8:E000)
+
+7E:0B00                 Game State (Pointed by D-Register)
+     06     WORD        Zero Word
+     51     BYTE        Incremented each Game VBlank (cleared in WaitVBlank)
+     55     BOOLBYTE    Start random battle
+     5A     BOOLBYTE    Global random battle disabler
+     CE     WORD        Scene number for GameScript Engine
+
+7E:0C00     0x200       Palette CGRAM DMA Buffer (see NMI_Handler)
+
+7E:16A9     BYTE        Clear party steps in map after random battle
+
+7E:1D00                 SPC Data
+
+7E:1F00     DWORD       NMI Thunk
+7E:1F04     DWORD       IRQ Thunk
+
+7E:1FFF                 Top of Stack
+
+7E:2000                 Battle Data 2
+
+   3ED6     BYTE        BattleMode (derived from battle speed / mode settings)
+
+   3EEF     16          Monster party data (copied from D0:3000)
+
+   4000     8           Monster Ids (max. 8 per monster party)
+
+   7CD8     BYTE        RepeatBattle
+
+7F:8000                 Place for dynamically uncompressed code (Bgfx)
+
+ROM:
+
+C0:0000                 HiRom Bank 0: Game Loop
+C1:0000                 HiRom Bank 1: Battle FX
+C2:0000                 HiRom Bank 2: Battle Main
+C3:0000                 HiRom Bank 3: Decompress engine + Bgfx 
+C4:0000                 HiRom Bank 4: SPC Music and SFX
+
+    SPC Program Data:
+    C4:064D => 0x200                  0x17F0 bytes
+    C4:1F95 => 0x2C00                 0x1C00
+    C4:1E3F => 0x4800                 0x10E
+    C4:1F4F => 0x1B00                 0x20
+    C4:1F71 => 0x1A80                 0x10
+    C4:1F83 => 0x1A00                 0x10
+
+D0:6800                 Monster Party Map (big table)
+
+D0:8900     8x???       Monster party Ids
+
+D0:ECF2     0x10        Battle speed / mode settings derived from 7E:0970
+
+D1:7000                 Default Party (for the new game), 80 x 4 bytes
+
+D8:E000     0x80        Copied to 7E:0A54

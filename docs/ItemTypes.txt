@@ -1,0 +1,256 @@
+0                   No item
+1                   Empty
+2       Knife       Knife
+3       Knife       Dagger
+4       Knife       Mythril
+5       Knife       Kunai
+6       Knife       MageMash
+7       Knife       Guardian
+8       Knife       Kodachi
+9       Knife       Orihalcn
+0xa     Knife       Air Lance
+0xb     Knife       Assassin
+0xc     Knife       Hardened
+0xd     Sword       Broad
+0xe     Sword       RegalCut
+0xf     Sword       Mythril
+0x10    Sword       Coral
+0x11    Sword       Ancient
+0x12    Sword       Epee
+0x13    Sword       Slumber
+0x14    Sword       Defender
+0x15    Sword       Excalibur
+0x16    Sword       Ragnarok
+0x17    Javelin     Javelin
+0x18    Javelin     Spear
+0x19    Javelin     Mythril
+0x1a    Javelin     Trident
+0x1b    Javelin     Wind
+0x1c    Javelin     Partisan
+0x1d    Javelin     Gungnir
+0x1e    [*]         DblLance
+0x1f    Javelin     Holy
+0x20    Javelin     Dragoon
+0x21    Axe         Battle
+0x22    Hammer      Mythril
+0x23    Axe         Ogre
+0x24    Hammer      War
+0x25    Axe         Venom
+0x26    Hammer      Earth
+0x27    Axe         Rune Axe
+0x28    Hammer      Thor
+0x29    Katana      Katana
+0x2a    Katana      Air Blade
+0x2b    Katana      Kotetsu
+0x2c    Katana      Bizen
+0x2d    Katana      Forged
+0x2e    Katana      Murasame
+0x2f    Katana      Masamune
+0x30    Katana      Tempest
+0x31    Rod         Rod
+0x32    Rod         Fire
+0x33    Rod         Ice
+0x34    Rod         Thunder
+0x35    Rod         Venom
+0x36    Rod         Lillith
+0x37    Rod         Wizard
+0x38    Staff       Staff
+0x39    Staff       Mythril
+0x3a    Staff       Power
+0x3b    Staff       Healing
+0x3c    Staff       Light
+0x3d    Staff       Sage
+0x3e    Staff       Judgment
+0x3f    Bow         Fire
+0x40    Bow         Ice
+0x41    Bow         Thunder
+0x42    Bow         Darkness
+0x43    Bow         KillerBow
+0x44    Bow         Elven
+0x45    Bow         Yoichi
+0x46    Bow         Artemis
+0x47    Harp        Silver
+0x48    Harp        Dream
+0x49    Harp        Lamia
+0x4a    Harp        Apollo
+0x4b    Whip        Whip
+0x4c    Whip        Chain
+0x4d    Whip        Thunder
+0x4e    Whip        Flame
+0x4f    Whip        Dragon
+0x50    Giyaman     Giyaman
+0x51    Giyaman     Earth
+0x52    Giyaman     Rune
+0x53    Giyaman     Tinker
+0x54    Knife       Sabre
+0x55    Sword       Drain
+0x56    Sword       RuneEdge
+0x57    Sword       Flame
+0x58    Sword       IceBrand
+0x59    [*]         Full Moon
+0x5a    Shuriken    Shuriken
+0x5b    Shuriken    Pinwheel
+0x5c    Sword       Excailbur
+0x5d    Whip        Beastkill
+0x5e    [*]         Flail
+0x5f    [*]         MornStar
+0x60    Rod         Wonder
+0x61    Sword       BraveBld
+0x62    [*]         Soot
+0x63    Knife       Chicken
+0x64    [*]         RisinSun
+0x65    Bow         Silver
+0x66    Bow         Gale
+0x67    Bow         AntiMagic
+0x68    Bow         Aviskill
+0x69    Axe         Doom
+0x6a    Axe         Giant
+0x6b    Knife       ManEater
+0x6c    Knife       Thief
+0x6d    Knife       Dancing
+0x6e    Sword       Enhancer
+0x6f                L-Hand
+0x70                R-Hand
+0x71                ---
+0x72                ---
+0x73                ---
+0x74                ---
+0x75                ---
+0x76                ---
+0x77                ---
+0x78                ---
+0x79                ---
+0x7a                ---
+0x7b                ---
+0x7c                ---
+0x7d                ---
+0x7e                ---
+0x7f                ---
+0x80                   
+0x81    Shield      Leather
+0x82    Shield      Bronze
+0x83    Shield      Iron
+0x84    Shield      Mythril
+0x85    Shield      Gold
+0x86    Shield      Aegis
+0x87    Shield      Diamond
+0x88    Shield      Crystal
+0x89    Helm        Leather
+0x8a    Helm        Bronze
+0x8b    Helm        Iron
+0x8c    Helm        Mythril
+0x8d    Helm        Gold
+0x8e    Helm        Diamond
+0x8f    Helm        Crystal
+0x90    Helm        Plumed
+0x91    Helm        Tricorn
+0x92    Helm        Magus
+0x93    Helm        Circlet
+0x94    Helm        GoldPin
+0x95    Ribbon      Ribbon
+0x96    Helm        Bandana
+0x97    Helm        GrnBeret
+0x98    Helm        DarkHood
+0x99    Helm        Tiara
+0x9a    Robe        Leather
+0x9b    Armor       Bronze
+0x9c    Armor       Iron
+0x9d    Armor       Mythril
+0x9e    Armor       Gold
+0x9f    Armor       Diamond
+0xa0    Armor       Crystal
+0xa1    Armor       CopperPlt
+0xa2    Robe        Training
+0xa3    Armor       Silver
+0xa4    Robe        Stealth
+0xa5    Armor       DiamondPlt
+0xa6    Robe        Dark
+0xa7    Robe        Cotton
+0xa8    Robe        Silk
+0xa9    Robe        GaiaGear
+0xaa    Robe        Bard
+0xab    Robe        Lumina
+0xac    Robe        Black
+0xad    Robe        White
+0xae    Robe        Mirage
+0xaf    Ring        Guard
+0xb0    Gloves      Thief
+0xb1    Gloves      Giant
+0xb2    Ring        Elf Cape
+0xb3    Ring        Cursed
+0xb4    Ring        Glasses
+0xb5    Boots       Running
+0xb6    Gloves      Mythril
+0xb7    Ring        Silver
+0xb8    Ring        Diamond
+0xb9    Robe        Strength
+0xba    Ring        Power
+0xbb    Robe        Angel
+0xbc    Ring        Angel
+0xbd    Ring        Flame
+0xbe    Ring        Coral
+0xbf    Armor       Bone Mail
+0xc0    Boots       Leather
+0xc1    Armlet      Kaiser
+0xc2    Gauntlet    Gauntlet
+0xc3    Helm        TigrMask
+0xc4    Shield      Flame
+0xc5    Ring        CornaJar
+0xc6    Shield      Genji
+0xc7    Helm        Genji
+0xc8    Armor       Genji
+0xc9    Gauntlet    Genji
+0xca    Ring        Wall
+0xcb    Helm        Coronet
+0xcc    Helm        Thornlet
+0xcd    Shield      Ice
+0xce    Shield      Cursed
+0xcf    Robe        Rainbow
+0xd0    Boots       Red
+0xd1                ---
+0xd2                ---
+0xd3                ---
+0xd4                ---
+0xd5                ---
+0xd6                ---
+0xd7                ---
+0xd8                ---
+0xd9                ---
+0xda                ---
+0xdb                ---
+0xdc                ---
+0xdd                ---
+0xde                ---
+0xdf                ---
+0xe0                Potion
+0xe1                HiPotion
+0xe2                Ether
+0xe3                Elixir
+0xe4                PhenixDwn
+0xe5                MaidnKiss
+0xe6                Revivify
+0xe7                TurtleShell
+0xe8                Antidote
+0xe9                Eyedrop
+0xea                DragnFang
+0xeb                DarkMatter
+0xec                Soft
+0xed                LuckMallet
+0xee                MagicLamp
+0xef                
+0xf0                Tent
+0xf1                Cabin
+0xf2    Drink       Giant
+0xf3    Drink       Power
+0xf4    Drink       Speed
+0xf5    Drink       Protect
+0xf6    Drink       Hero
+0xf7                DrgnCrest
+0xf8                OmegaMedl
+0xf9                Ramuh
+0xfa                Shoat
+0xfb                Golem
+0xfc    Shard       Flame
+0xfd    Shard       Water
+0xfe    Shard       Thunder
+0xff                by RPGe :-)

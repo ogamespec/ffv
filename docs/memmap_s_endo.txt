@@ -1,0 +1,396 @@
+// Translated by Google
+
+32	rw	Temporary variable Index to your own address
+47	rw	Temporary variable Your number (0 to 3: ally, 4 to: enemy)
+48	rw	Temporary variable number of partner (0 to 3: ally, 4 to: enemy)
+49	rw	Temporary variable Index to target address
+4D	rw	Temporary variable attack attribute? (01: flame, 02: ice, 04: thunder, 08: poison, 10: sacred, 20: earth, 40: wind, 80: water)
+4E	rw	Temporary variable hit ratio
+4F	rw	Temporary variable avoidance rate
+50	rw	Temporary Variable Attack Power (Lower)
+51	rw	Temporary variable Attack power (upper)
+52	rw	Temporary variable magnification (lower order)
+53	rw	Temporary variable magnification (upper)
+54	rw	Temporary variable defense power (lower order)
+55	rw	Temporary variable defense power (upper)
+56	rw	For temporary variable hit determination? (Hits if 0)
+57	rw	Temporary variable General data 1
+58	rw	Temporary variable General data 2
+59	rw	Temporary variable General data 3
+5A	rw	Temporary variable?
+5B	rw	Temporary variable?
+5C	rw	Temporary variable?
+5D	rw	Temporary variable avoidance effect (0: mistake, 1: defender, 2: stubborn, 3: elves' cloak, 4: golem, 5: white blade removed, 6: shield, 7: miss)
+5E	rw	Temporary variable?
+5F	rw	Temporary variable attack effect flag (1)?
+60	rw	Temporary variable Magic sword flag
+61	rw	Temporary variable attack effect flag (2)?
+62	rw	Temporary variable absorption flag?
+63	rw	Temporary variable?
+64	rw	Temporary variable?
+
+7E04F0	rw	Type of monster party (lower order)
+7E04F1	rw	Type of monster party (upper)
+7E04F2	rw	Background type
+
+7E0502	rw	(level)
+7E0524	rw	(force)
+7E0525	rw	(Suspension)
+7E0526	rw	(physical strength)
+7E0527	rw	(magic)
+
+7E053A	rw	Job level
+7E053B	rw	Ability Point
+
+7E0947	rw	Gold held (low order)
+7E0948	rw	Gold held (medium)
+7E0949	rw	Gold held (up)
+
+7E094E	rw	Number of defeated monsters (lower)
+7E094F	rw	Number of defeated monsters (top)
+
+7E09B5	rw	Number of runs (lower)
+7E09B6	rw	Number of runs (medium)
+7E09B7	rw	Number of runs (upper)
+
+7E09C0	rw	Battle frequency (lower)
+7E09C1	rw	Battle frequency (upper)
+7E09C2	rw	Save count (low)
+7E09C3	rw	Save count (high)
+
+7E2000	rw	Column (bit 7), character number (lower 4 bits)
+7E2001	rw	Job number
+7E2002	rw	level
+7E2003	rw	Experience value (low order)
+7E2004	rw	Experience value (medium)
+7E2005	rw	Experience value (top)
+7E2006	rw	Hit point (lower order)
+7E2007	rw	Hit points (top)
+7E2008	rw	Maximum Hit Point (Lower)
+7E2009	rw	Maximum Hit Point (Top)
+7E200A	rw	Magic point (low order)
+7E200B	rw	Magic point (top)
+7E200C	rw	Maximum magic point (lower order)
+7E200D	rw	Maximum magic point (upper)
+7E200E	rw	Equipment (head)
+7E200F	rw	Equipment (body)
+7E2010	rw	Equipment (accessories)
+7E2011	rw	Flag Part 1? (Does it relate to the display of defense / avoidance rate / magic defense / weight of equipment?)
+7E2012	rw	Flag Part 2? (Defense / Avoidance Rate / Magic Defense / Related to the Display of Weight?
+7E2013	rw	Equipment (left hand)
+7E2014	rw	Equipment (right hand)
+7E2015	rw	Captive monster
+7E2016	rw	Combat command (1st)
+7E2017	rw	Combat command (2nd)
+7E2018	rw	Combat command (3rd)
+7E2019	rw	Battle Command (4th)
+7E201A	rw	State change 1 (permanent state) (01: darkness, 02: zombies, 04: poisonous, 08: levite, 10: minimum, 20: frog, 40: petrified, 80: battle impossible)
+7E201B	rw	State change 2 (temporary state) (01: division 1, 02: division 2, 04: silence, 08: berserk, 10: confusion, 20: paralysis, 40: sleep, 80: gradually aging)
+7E201C	rw	State change 3 (auxiliary magic) (01: regener, 02: invincible state, 04: slow, 08: haste, 10: stop, 20: shell, 40: protector, 80: reflex)
+7E201D	rw	State change 4 (01: escape, 02: moribund state, 04: singing, 08: slip, 10: declaration of death, 20: direction reversal, 40: invincible state, 80: departure)
+7E201E	rw	Flag (10: Jump, 40: Defend, 80: Defense?)
+7E201F	rw	20: Unknown (Attacking power 1/2), 40: Throwing ?, 80: Are you sure you hit?) Flags (04: Ignore Defense ?, 08: Half-Decay?
+7E2020	rw	Ability flag? (40: white blade removed, 80: counter)
+7E2021	rw	Ability Flag? (01: Dual Sword ?, 10: Medicine Knowledge, 20: Two Hands, 40: Fighting?)
+7E2022	rw	Power up attribute?
+7E2023	rw	Equipment weight
+7E2024	rw	Power (no equipment correction)
+7E2025	rw	Prime speed (no equipment correction)
+7E2026	rw	Physical fitness (no equipment correction)
+7E2027	rw	Magical power (no equipment correction)
+7E2028	rw	Force (equipped with equipment correction)
+7E2029	rw	Suspension (equipped with equipment correction)
+7E202A	rw	Physical fitness (with equipment correction)
+7E202B	rw	Magical power (equipped with equipment correction)
+7E202C	rw	Physical avoidance rate
+7E202D	rw	Physical defense
+7E202E	rw	Magical avoidance rate
+7E202F	rw	Magic defense
+7E2030	rw	Absorptive properties (01: Inflammation, 02: Ice, 04: Ray, 08: Poison, 10: St., 20: Ground, 40: Wind, 80: Water)
+7E2031	rw	????Attributes? (01: Inflammation, 02: Ice, 04: Ray, 08: Poison, 10: St., 20: Ground, 40: Wind, 80: Water)
+7E2032	rw	Invalid attribute? (01: Fire, 02: Ice, 04: Thunder, 08: Poison, 10: Holy, 20: Earth, 40: Wind, 80: Water)
+7E2033	rw	Half reduction attribute? (01: Fire, 02: Ice, 04: Thunder, 08: Poison, 10: Holy, 20: Earth, 40: Wind, 80: Water)
+7E2034	rw	Weakness attributes (01: Inflammation, 02: Ice, 04: Ray, 08: Poison, 10: St., 20: Ground, 40: Wind, 80: Water)
+7E2035	rw	State change 1 (permanent state) Resistance (01: Darkness, 02: Zombies, 04: Very poisonous, 08: Levitate, 10: Minimum, 20: Frog, 40: Petrified, 80: Fighting impossible)
+7E2036	rw	State change 2 (temporary state) tolerance (01: alter ego 1, 02: alter ego 2, 04: silence, 08: berserk, 10: confusion, 20: paralysis, 40: sleep, 80: gradually aging)
+7E2037	rw	State change 3 (auxiliary magic) resistance (01: regener, 02: invincible state, 04: slow, 08: haste, 10: stop, 20: shell, 40: protector, 80: reflex)
+7E2038	rw	Equipment Special Effect Flag? (20: Masamune, 40: Sesame Sticky, 80: Defender)
+7E2039	rw	Equipment special effect flag (01: capture with HP 1/2, 02: immortality characteristic addition, 04: sword dance probability increase, 08: consumption MP 1/2, 10: steal success rate 2 times, 20: fighting effect addition, 40: Elves' cloak, 80: Aegis)
+7E203A	rw	Job level
+7E203B	rw	Ability point (lower order)
+7E203C	rw	Ability points (top)
+7E203D	rw	Magic that can be used (part 1)
+7E203E	rw	Magic that can be used (part 2)
+7E203F	rw	Magic that can be used (part 3)
+7E2040	rw	Items that can be equipped (Part 1)
+7E2041	rw	Items that can be equipped (Part 2)
+7E2042	rw	Items that can be equipped (Part 3)
+7E2043	rw	Items that can be equipped (part 4)
+7E2044	rw	Attack power (It will be overwritten by monster's attack power at "Hanatsu")
+
+7E204E	rw	Ability Flag (Only for Pupil)? (01: Dual Sword, 10: Knowledge of Medicine, 20: Two Handed, 40: Fight?
+
+7E2050	rw	Magical sword additional attribute (2:) (01: Flame, 02: Ice, 04: Thunder, 08: Poison, 10: Holy, 20: Earth, 40: Wind, 80: Water)
+7E2051	rw	Magic sword additional attribute (3 times) (01: flame, 02: ice, 04: lightning, 08: poison, 10: sacred, 20: earth, 40: wind, 80: water)
+7E2052	rw	Magical sword additional attribute (4 times / instant death) (01: flame, 02: ice, 04: thunder, 08: poison, 10: sacred, 20: earth, 40: wind, 80: water)
+7E2053	rw	Magic sword addition state change 1 (persistent state) (01: darkness, 02: zombies, 04: poisonous, 08: levite, 10: minimum, 20: frog, 40: petrified, 80: battle impossible)
+7E2054	rw	Magical sword addition state change 2 (temporary state) (01: split 1, 02: split 2, 04: silence, 08: berserk, 10: confusion, 20: paralysis, 40: sleep, 80: gradually aging)
+7E2055	rw	Magic sword special effect flag (20: MP absorption, 40: HP absorption, 80: flare sword effect)
+7E2056	rw	(Flag system?)
+7E2057	rw	Number of the command to be executed
+7E2058	rw	The object of action (enemies) (01: No. 8, 02: No. 7, 04: No. 6, 08: No. 5, 10: No. 4, 20: No. 3, 40: No. 2, 80 : No. 1)
+7E2059	rw	Target of action (ally) (10: No.4, 20: No.3, 40: No.2, 80: No. 1)
+7E205A	rw	The number of items to use?
+7E205B	rw	(Used in "imitation")
+7E205C	rw	(Used in "imitation")
+7E205D	rw	(Used in "imitation")
+7E205E	rw	(Used in "imitation")
+7E205F	rw	(Used in "imitation")
+
+7E2062	rw	Damage magnification (It is set by monster magnification at "Hanatsu")
+
+7E2065	rw	Monster type (01: Undead, 02: Unknown 1, 04: Demonic Beast, 08: Avis, 10: Dragon, 20: Boss, 40: Desert, 80: Human)
+7E2066	rw	Various flags (08: tolerance to capture, 10: tolerance to confusion, 80: HP display of libraries is "????")
+
+7E206B	rw	Flag as to whether the item was stolen (0: not yet stolen)
+
+7E206E	rw	Characteristics of the work (01: attack power 3/2, 02: slip, 04: confusion, 08: paralysis, 10: darkness, 20: poisoning, 40: gradually aging, 80: inevitable / defensive force neglected)
+7E206F	rw	Parameter to be up by song (08: level, 10: magical power, 20: strength, 40: speed, 80: force)
+7E2070	rw	Temporary state change 1 (permanent state) (01: darkness, 02: zombies, 04: poisonous, 08: levite, 10: minimum, 20: frog, 40: petrified, 80: battle impossible)
+7E2071	rw	Temporary state change 2 (temporary state) (01: alter ego 1, 02: alter ego 2, 04: silence, 08: berserk, 10: confusion, 20: paralysis, 40: sleep, 80: gradually aging)
+7E2072	rw	Temporary state change 3 (auxiliary magic) (01: regener, 02: invincible state, 04: slow, 08: haste, 10: stop, 20: shell, 40: protector, 80: reflex)
+7E2073	rw	Temporary state change 4 (01: escape, 02: moribund state, 04: singing, 08: slip, 10: declaration of death, 20: direction reversal, 40: invincible state, 80: departure)
+7E2074	rw	Force correction value?
+7E2075	rw	Speed correction value?
+7E2076	rw	Physical fitness correction value?
+7E2077	rw	Magical power correction value?
+7E2078	rw	Level correction value?
+
+7E207A	rw	Type of attack effect
+
+7E207F	rw	Name of the work
+
+7E2620	rw	General purpose area? [0]
+7E2621	rw	General purpose area? [1]
+7E2622	rw	General purpose area? [2]
+7E2623	rw	General purpose area? [3]
+7E2624	rw	General purpose area? [4]
+7E2625	rw	General purpose area? [5]
+7E2626	rw	General purpose area? [6]
+7E2627	rw	General purpose area? [7]
+
+7E2720	rw	Command related general area? [0]
+7E2721	rw	Command related general area? [1]
+7E2722	rw	Command related general area? [2]: Magic · special · item number
+7E2723	rw	Command related general area? [3]
+7E2724	rw	?
+7E2725	rw	??
+
+7E29A6	rw	For block transfer instruction (X)
+7E29A8	rw	For block transfer instruction (Y)
+7E29AA	rw	For block transfer instruction (A)
+
+7E3CF1	rw	Timer control flag? (Stop effect release) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+7E3CF2	rw	Timer control flag? (Poison damage) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+7E3CF3	rw	Timer control flag? (Reflex effect cancellation) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+7E3CF4	rw	Timer control flag? (Shinkin) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+7E3CF5	rw	Timer control flag? (Silence effect release) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+7E3CF6	rw	Timer control flag? (Slip effect release) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+7E3CF7	rw	Timer control flag? (Gradually lowering ability value due to aging) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+7E3CF8	rw	Timer control flag? (Regen recovery) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+7E3CF9	rw	Timer control flag? (Capability value increase by song) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+7E3CFA	rw	Timer control flag? (Paralysis effect release) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+7E3CFB	rw	Timer control flag? (Wait for available time (ATB gauge)) (01: Increase / Do not ?, 40: Do not reflect on display ?, 80: Process invocation?)
+
+7E3D75	rw	Timer current value (Stop effect release)
+7E3D76	rw	Timer current value (poison damage)
+7E3D77	rw	Timer current value (Reflex effect release)
+7E3D78	rw	Timer current value (Shikkun)
+7E3D79	rw	Timer current value (silence effect release)
+7E3D7A	rw	Current timer value (cancels slip effect)
+7E3D7B	rw	Current timer value (gradually lowering ability value due to aging)
+7E3D7C	rw	Current timer value (regeneration recovery)
+7E3D7D	rw	Current timer value (rise in ability value by song)
+7E3D7E	rw	Timer current value (cancels paralysis effect)
+7E3D7F	rw	Timer current value (Wait for possible action time (ATB gauge))
+
+7E3DF9	rw	Timer initial value (Stop effect release)
+7E3DFA	rw	Initial timer value (poison damage)
+7E3DFB	rw	Timer initial value (Reflex effect cancellation)
+7E3DFC	rw	Initial timer value (Shinkansen)
+7E3DFD	rw	Initial timer value (silence effect release)
+7E3DFE	rw	Initial timer value (cancels slip effect)
+7E3DFF	rw	Initial timer value (gradually lowering ability value due to aging)
+7E3E00	rw	Initial value of timer (regeneration recovery)
+7E3E01	rw	Initial timer value (increase in ability value by song)
+7E3E02	rw	Initial timer value (cancels paralysis effect)
+7E3E03	rw	Initial value of timer (wait for possible action time (ATB gauge))
+
+7E3E7D	rw	Timer related 1? (Stop effect release)
+7E3E7E	rw	タイマー関連1?(毒ダメージ)
+7E3E7F	rw	タイマー関連1?(リフレク効果解除)
+7E3E80	rw	タイマー関連1?(しのせんこく)
+7E3E81	rw	タイマー関連1?(沈黙効果解除)
+7E3E82	rw	タイマー関連1?(スリップ効果解除)
+7E3E83	rw	タイマー関連1?(徐々に老化による能力値低下)
+7E3E84	rw	タイマー関連1?(リジェネ回復)
+7E3E85	rw	タイマー関連1?(歌による能力値上昇)
+7E3E86	rw	タイマー関連1?(麻痺効果解除)
+7E3E87	rw	タイマー関連1?(行動可能時間待ち(ATBゲージ))
+
+7E3E88	rw	タイマー関連2?(ストップ効果解除)
+7E3E89	rw	タイマー関連2?(毒ダメージ)
+7E3E8A	rw	タイマー関連2?(リフレク効果解除)
+7E3E8B	rw	タイマー関連2?(しのせんこく)
+7E3E8C	rw	タイマー関連2?(沈黙効果解除)
+7E3E8D	rw	タイマー関連2?(スリップ効果解除)
+7E3E8E	rw	タイマー関連2?(徐々に老化による能力値低下)
+7E3E8F	rw	タイマー関連2?(リジェネ回復)
+7E3E90	rw	タイマー関連2?(歌による能力値上昇)
+7E3E91	rw	タイマー関連2?(麻痺効果解除)
+7E3E92	rw	タイマー関連2?(行動可能時間待ち(ATBゲージ))
+
+7E3E93	rw	タイマー関連3?(ストップ効果解除)
+7E3E94	rw	タイマー関連3?(毒ダメージ)
+7E3E95	rw	タイマー関連3?(リフレク効果解除)
+7E3E96	rw	タイマー関連3?(しのせんこく)
+7E3E97	rw	タイマー関連3?(沈黙効果解除)
+7E3E98	rw	タイマー関連3?(スリップ効果解除)
+7E3E99	rw	タイマー関連3?(徐々に老化による能力値低下)
+7E3E9A	rw	タイマー関連3?(リジェネ回復)
+7E3E9B	rw	タイマー関連3?(歌による能力値上昇)
+7E3E9C	rw	タイマー関連3?(麻痺効果解除)
+7E3E9D	rw	タイマー関連3?(行動可能時間待ち(ATBゲージ))
+
+7E3EB7	rw	タイマー関連4?(ストップ効果解除)
+7E3EB8	rw	タイマー関連4?(毒ダメージ)
+7E3EB9	rw	タイマー関連4?(リフレク効果解除)
+7E3EBA	rw	タイマー関連4?(しのせんこく)
+7E3EBB	rw	タイマー関連4?(沈黙効果解除)
+7E3EBC	rw	タイマー関連4?(スリップ効果解除)
+7E3EBD	rw	タイマー関連4?(徐々に老化による能力値低下)
+7E3EBE	rw	タイマー関連4?(リジェネ回復)
+7E3EBF	rw	タイマー関連4?(歌による能力値上昇)
+7E3EC0	rw	タイマー関連4?(麻痺効果解除)
+7E3EC1	rw	タイマー関連4?(行動可能時間待ち(ATBゲージ))
+
+7E3ECE	rw	Types of timers
+
+7E3ED6	rw	Speed related
+7E3ED7	rw	Which of the two timer cycles to use (0: for ally, 1: enemy)
+7E3ED8	rw	Cycle setting value
+
+7E3ED9	rw	Timer related 5? (Stop effect release)
+7E3EDA	rw	Timer related 5? (Poison damage)
+7E3EDB	rw	Timer related 5? (Reflex effect release)
+7E3EDC	rw	Timer related 5? (Shinkuke)
+7E3EDD	rw	Timer related 5? (Silence effect release)
+7E3EDE	rw	Timer related 5? (Release of slip effect)
+7E3EDF	rw	Timer related 5? (Gradual decrease in ability value due to aging)
+7E3EE0	rw	Timer related 5? (Regeneration recovery)
+7E3EE1	rw	Timer related 5? (Capability value increase by song)
+7E3EE2	rw	Timer related 5? (Paralysis effect release)
+7E3EE3	rw	Timer related 5? (Waiting for possible action time (ATB gauge))
+
+7E3EE4	rw	Timer related 6? (Stop effect release)
+7E3EE5	rw	Timer related 6? (Poison damage)
+7E3EE6	rw	Timer related 6? (Reflex effect release)
+7E3EE7	rw	Timer related 6? (Shinkansen)
+7E3EE8	rw	Timer related 6? (Silence effect release)
+7E3EE9	rw	Timer related 6? (Release of slip effect)
+7E3EEA	rw	Timer related 6? (Gradual decrease in ability value due to aging)
+7E3EEB	rw	Timer related 6? (Regeneration recovery)
+7E3EEC	rw	Timer related 6? (Capacity increase by song)
+7E3EED	rw	Timer related 6? (Paralysis effect release)
+7E3EEE	rw	Timer related 6? (Waiting for available time (ATB gauge))
+
+7E3EEF	rw	MONPARTY[0]: Visual effects
+7E3EF0	rw	MONPARTY[1]: Ease of getaway (80: escape)
+7E3EF1 	rw	MONPARTY[2]: Ability Point
+7E3EF2	rw	MONPARTY[3]: The appearance state of the monster at the start of battle (01: No.8, 02: No.7, 04: No.6, 08: No.5, 10: No.4, 20: No.3, 40: No.2 , 80: No.1)
+7E3EF3	rw	MONPARTY[4]: Number of the first monster (lower 8 bits)
+7E3EF4	rw	MONPARTY[5]: Number of the second monster (lower 8 bits)
+7E3EF5	rw	MONPARTY[6]: Number of the third monster (lower 8 bits)
+7E3EF6	rw	MONPARTY[7]: Number of the 4th monster (lower 8 bits)
+7E3EF7	rw	MONPARTY[8]: Number of the fifth monster (lower 8 bits)
+7E3EF8	rw	MONPARTY[9]: Number of the sixth monster (lower 8 bits)
+7E3EF9	rw	MONPARTY[10]: Number of the seventh monster (lower 8 bits)
+7E3EFA	rw	MONPARTY[11]: Number of the eighth monster (lower 8 bits)
+7E3EFB	rw	MONPARTY[12]: Unknown (Flag system?)
+7E3EFC	rw	MONPARTY[13]: Unknown (Flag system?)
+7E3EFD	rw	MONPARTY[14]: (08: Boss fight, upper 4 bits: Music related)
+7E3EFE	rw	MONPARTY[15]: Unknown (Flag system?)
+
+7E4020	rw	Monster number
+
+7E41C0	rw	Number of the command to be executed
+
+7E4363	rw	Internal variable related to monster's behavior 1?
+7E4364	rw	Internal variable related to the behavior of the monster 2?
+7E4365	rw	Internal variable related to the behavior of the monster 3?
+
+7E4694	rw	Condition compliance flag (nonzero: matched, 0: not applicable)
+
+7E79FC	rw	Magic · technique · tool · weapon data to execute 0 byte 0
+7E79FD	rw	1st byte of magic · technique · tool · weapon data to execute
+7E79FE	rw	Magic · technique · tool · weapon data to be executed 2nd byte
+7E79FF	rw	Third byte of magic, technique, tool, weapon data to execute
+7E7A00	rw	4th byte of magic · technique · tool · weapon data to execute
+7E7A01	rw	5th byte of magic / technique / tool / weapon to execute
+7E7A02	rw	6th byte of magic / technique / tool / weapon to execute
+7E7A03	rw	7th byte of magic / technique / tool / weapon to execute
+7E7A04	rw	8th byte of magic · technique · tool · weapon to execute
+7E7A05	rw	9th byte of magic / technique / tool / weapon to execute
+7E7A06	rw	Ten bytes of magic / technique / tool / weapon data to execute
+7E7A07	rw	Magic, technique, tool, weapon data to be executed 11th byte
+
+7E7B69	rw	Temporary variable damage point
+7E7B6B	rw	Temporary variable My HP reduction
+7E7B6D	rw	Temporary variable HP reduction amount of opponent
+7E7B6F	rw	Temporary variable Your HP recovery volume
+7E7B71	rw	Temporary variable HP recovery amount of opponent
+7E7B73	rw	Temporary variable Your MP recovery amount
+7E7B75	rw	Temporary variable MP recovery amount of opponent
+7E7B77	rw	Temporary variable Decrease in own MP
+7E7B79	rw	Temporary variable MP decrease amount
+
+7E7BE1	rw	The power of the character currently in action
+7E7BE2	rw	The speed of the character currently in action
+7E7BE3	rw	Physical strength of the current character
+7E7BE4	rw	Magical power of the character currently in action
+7E7BE5	rw	Level of current character
+
+7E7BE6	rw	Flag? (40: Mute)
+
+7E7C0A	rw	Flag on whether or not you defeated a monster (ON: Killed, OFF: Not knocked down)
+
+7E7C11	rw	Maximum hit point before giant's medicine use? (1st person)
+7E7C12	rw	Maximum hit point before giant's medicine use? (Second person)
+7E7C13	rw	Maximum hit points before giant's medicine use? (3rd person)
+7E7C14	rw	Maximum hit point before giant's medicine use? (4th person)
+
+7E7C1E	rw	Damage that can be with golem? (Lower)
+7E7C1F	rw	Damage that can be with golem? (Top)
+
+7E7C4B	rw	(Capturing Monster)
+
+7E7C51	rw	How many turns can you act quickly?
+
+7E7C59	rw	Giant's medicine use flag? (1st person)
+7E7C5A	rw	Giant's medicine use flag? (Second person)
+7E7C5B	rw	Giant's medicine use flag? (Third person)
+7E7C5C	rw	Giant 's medicine use flag? (4th person)
+
+7E7C64	rw	Current hit points of the actor?
+
+7E7C74	rw	Number of times using magic lamp
+7E7C75	rw	Number of escapes? + 1? (Upper limit: 255)
+
+7E7CB7	rw	Division Routine Dividend (Lower)
+7E7CB8	rw	Division routine dividend (upper)
+7E7CB9	rw	Division routine divisor (lower order)
+7E7CBA	rw	Division routine divisor (upper)
+7E7CBB	rw	Division Routine Division Result (Lower)
+7E7CBC	rw	Division Routine Division Result (Upper)
+7E7CBD	rw	Divide Routine Division Surplus Result (Lower)
+7E7CBE	rw	Division Routine Division Surplus Result (Upper)

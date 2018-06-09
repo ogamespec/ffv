@@ -25,7 +25,7 @@ BattleStart ()          // C2:0000
 
     do
     {
-        BattleMain ();
+        BattleInit ();
 
         byte_7E420C = 0;
         byte_7E420B = 0;
@@ -35,7 +35,7 @@ BattleStart ()          // C2:0000
     InitBattleMem ();
 }
 
-BattleMain ()           // C2:4CE0
+BattleInit ()           // C2:4CE0
 {
         // Summary external ROM Usage:
         //      D1:2976 - Copy defaults
@@ -118,7 +118,9 @@ BattleMain ()           // C2:4CE0
                 byte_7E4021[Y] = 1;
         }
         else
+        {
             byte_7E4021[Y] = 0xFF;
+        }
 
         X++;
         Y += 2;
@@ -240,7 +242,9 @@ BattleMain ()           // C2:4CE0
     sub_C24E9F ();
 
     if ( byte_7E3C5F )
+    {
         CallBattleFX (0xa);
+    }
 
     goto BattleLoop;
 }
@@ -257,7 +261,7 @@ ResetBattleVars ()      // C2:4F0A
     byte_7E41AC = 0xFF;
     byte_7E41AD = 0xFF;
     byte_7E41CC = 0xFF;
-    byte_7E7C4B = 0xFF;
+    byte_7E7C4B = 0xFF;         // (Capturing Monster)
 
     memset ( 7E:384C, 0xFF, 0x200 );      // 0x200 bytes
 
